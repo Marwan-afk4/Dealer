@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('sale_people', function (Blueprint $table) {
             $table->id();
+            $table->string('sale_name')->Notnulable();
+            $table->string('sale_phone')->Notnulable();
             $table->timestamps();
         });
     }

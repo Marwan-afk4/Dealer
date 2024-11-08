@@ -13,6 +13,15 @@ return new class extends Migration
     {
         Schema::create('lead_subscritions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('full_name')->NotNullable();
+            $table->string('email')->NotNullable()->unique();
+            $table->string('phone')->NotNullable()->unique();
+            $table->integer('age')->Notnulable();
+            $table->string('governate')->Notnulable();
+            $table->integer('experience_year')->Notnulable();
+            $table->string('interst_areas')->Notnulable();
+            $table->string('projects')->Notnulable();
             $table->timestamps();
         });
     }

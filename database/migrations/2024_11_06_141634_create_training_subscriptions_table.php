@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('training_subscriptions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('full_name')->NotNullable();
+            $table->string('email')->NotNullable()->unique();
+            $table->string('phone')->NotNullable()->unique();
+            $table->integer('age')->Notnulable();
+            $table->string('qualification')->Notnulable();
+            $table->string('governate')->Notnulable();
+            $table->integer('experience_year')->Notnulable();
             $table->timestamps();
         });
     }

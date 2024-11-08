@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('commissions', function (Blueprint $table) {
+        Schema::create('marketing_devs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('brocker_id')->constrained()->onDelete('cascade');
             $table->foreignId('developer_id')->constrained()->onDelete('cascade');
-            $table->foreignId('uptown_id')->constrained()->onDelete('cascade');
-            $table->integer('commission');
+            $table->string('name')->Notnulable();
+            $table->string('phone')->unique()->Notnulable();
+            $table->string('place')->Notnulable();
+            $table->string('start_date')->Notnulable();
+            $table->string('end_date')->Notnulable();
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('commissions');
+        Schema::dropIfExists('marketing_devs');
     }
 };

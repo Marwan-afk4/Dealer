@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('requests', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->timestamp('request_time');
+            $table->enum('request_type',['training','contract']);
             $table->timestamps();
         });
     }

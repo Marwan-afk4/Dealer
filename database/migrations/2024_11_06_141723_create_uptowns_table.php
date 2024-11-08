@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('uptowns', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('developer_id')->constrained()->onDelete('cascade');
+            $table->string('name')->Notnulable();
+            $table->string('description')->Notnulable();
+            $table->string('apparment')->Notnulable();
+            $table->string('strat_price')->Notnulable();
+            $table->date('delivery_date')->Notnulable();
+            $table->string('sale_type')->Notnulable();
+            $table->longText('image')->nullable();
             $table->timestamps();
         });
     }

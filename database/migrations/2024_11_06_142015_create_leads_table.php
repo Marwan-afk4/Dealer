@@ -13,6 +13,15 @@ return new class extends Migration
     {
         Schema::create('leads', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('developer_id')->constrained()->onDelete('cascade');
+            $table->foreignId('uptown_id')->constrained()->onDelete('cascade');
+            $table->foreignId('sale_person_id')->constrained()->onDelete('cascade');
+            $table->foreignId('brocker_id')->constrained()->onDelete('cascade');
+            $table->date('brocker_start_date')->Notnulable();
+            $table->string('lead_name')->Notnulable();
+            $table->date('start_date')->Notnulable();
+            $table->date('end_date')->Notnulable();
+            $table->enum('status',['closed','pending','lost','in_progress'])->default('pending');
             $table->timestamps();
         });
     }

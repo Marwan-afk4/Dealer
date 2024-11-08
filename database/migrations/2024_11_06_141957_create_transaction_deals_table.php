@@ -13,6 +13,16 @@ return new class extends Migration
     {
         Schema::create('transaction_deals', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('brocker_id')->constrained()->onDelete('cascade');
+            $table->foreignId('developer_id')->constrained()->onDelete('cascade');
+            $table->foreignId('sale_person_id')->constrained()->onDelete('cascade');
+            $table->foreignId('uptown_id')->constrained()->onDelete('cascade');
+            $table->string('fullname')->Notnulable();
+            $table->string('phone')->Notnulable();
+            $table->float('deal_value')->Notnulable();
+            $table->longText('image')->nullable();
+            $table->string('status')->Notnulable();
+            $table->string('profit')->nullable();
             $table->timestamps();
         });
     }
