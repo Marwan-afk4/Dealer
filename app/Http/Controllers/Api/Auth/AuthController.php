@@ -40,17 +40,21 @@ class AuthController extends Controller
 
     public function login(Request $request) {
         $validation = Validator::make($request->all(), [
-            'phone' => 'required|exists:users',
+            'phone' => 'nullable|exists:users',
+            'email' => 'nullable|exists:users',
             'password' => 'required|min:6',
         ]);
         if($validation->fails()) {
             return response()->json(['error' => $validation->errors()], 401);
         }
 
-        $user = User::where('phone', $request->phone)->first();
-        if(! $user || ! Hash::check($request->password, $user->password)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        $user=User::where('email', $request->email)
+        ->orWhere('phone', $request->phone)
+        ->first();
+        if(!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json(['error' => 'The provided credentials are incorrect'], 401);
         }
+
         $token = $user->createToken('auth_token')->plainTextToken;
         return response()->json([
             'message' => 'User successfully logged in',
