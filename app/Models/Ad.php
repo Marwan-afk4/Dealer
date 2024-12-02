@@ -5,17 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Developer extends Model
+class Ad extends Model
 {
     use HasFactory;
 
-
     protected $fillable = [
-        'name',
-        'email',
-        'place',
-        'units',
-        'total_deals',
-        'deals_done',
+        'title',
+        'image',
     ];
+
+
 }

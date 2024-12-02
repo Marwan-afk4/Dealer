@@ -3,9 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Model
 {
+    use HasApiTokens, HasFactory, Notifiable;
 
 
     protected $fillable = [
@@ -17,5 +21,10 @@ class User extends Model
         'provider',
         'provider_id',
         'role'
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
     ];
 }
