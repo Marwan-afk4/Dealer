@@ -19,5 +19,10 @@ class Uptown extends Model
         'delivery_date',
         'sale_type',
         'image',
+        'status'
     ];
+
+    public function developer(){
+        return $this->belongsTo(Developer::class);
+    }
 }

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\Admin\AdsController;
 use App\Http\Controllers\Api\Admin\DeveloperControlelr;
 use App\Http\Controllers\Api\Admin\HomepageController;
+use App\Http\Controllers\Api\Admin\UnitController;
 use App\Http\Controllers\Api\Admin\UserController;
 use App\Http\Controllers\Api\Auth\AuthController;
 use Illuminate\Http\Request;
@@ -14,9 +15,13 @@ Route::get('/', function (Request $request) {
 Route::post('/register',[AuthController::class, 'register']);
 Route::post('/login',[AuthController::class, 'login']);
 
+
+
 Route::middleware(['auth:sanctum', 'IsAdmin'])->group(function () {
 
     Route::get('/admin/homepage',[HomepageController::class, 'homepage']);
+
+    Route::post('/admin/logout',[AuthController::class, 'logout']);
 
     /////////////////////////////////// ADS ////////////////////////////////////////////////////
 
@@ -38,8 +43,19 @@ Route::middleware(['auth:sanctum', 'IsAdmin'])->group(function () {
 
 ///////////////////////////////////////////// Developer ///////////////////////////////////////
 
-    Route::get('/admin/developers',[DeveloperControlelr::class, 'Developes_excist']);
+    Route::get('/admin/developers',[DeveloperControlelr::class, 'AllDevelopers']);
 
+    Route::get('/admin/developer/{id}',[DeveloperControlelr::class, 'developer']);
+
+    Route::post('/admin/developer/add',[DeveloperControlelr::class, 'addDeveloper']);
+
+    Route::delete('/admin/developer/delete/{id}',[DeveloperControlelr::class, 'deleteDeveloper']);
+
+    Route::put('/admin/developer/update/{id}',[DeveloperControlelr::class, 'updateDeveloper']);
+
+//////////////////////////////////////////// Uptowns (units) ////////////////////////////////////////////////
+
+    Route::get('/admin/units/{developer_id}',[UnitController::class, 'unitDeveloper']);
 
 
 });

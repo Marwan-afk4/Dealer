@@ -16,6 +16,21 @@ class Developer extends Model
         'place',
         'units',
         'total_deals',
+        'total_profit',
         'deals_done',
+        'start_date',
+        'end_date',
+        'image',
+        'sales_man'
     ];
+
+    public function place(){
+        return $this->hasMany(Place::class);
+    }
+
+    public function uptowns(){
+        return $this->hasMany(Uptown::class);
+    }
+
+    
 }
