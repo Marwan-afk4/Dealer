@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 
 class DeveloperControlelr extends Controller
 {
-    protected $updateDeveloper = ['name','email','start_date','end_date','image'];
+    protected $updateDeveloper = ['name','email','start_date','end_date','image','sales_man'];
 
 
     public function AllDevelopers(){
@@ -85,6 +85,7 @@ class DeveloperControlelr extends Controller
         'start_date' => 'nullable|date',
         'end_date' => 'nullable|date',
         'image' => 'nullable',
+        'sales_man' => 'required',
         'places' => 'nullable|array', // Ensure 'places' is an array
         'places.*.id' => 'nullable|exists:places,id', // Validate place IDs if provided
         'places.*.place' => 'required|string', // Validate place data
