@@ -47,7 +47,7 @@ class DeveloperControlelr extends Controller
     public function addDeveloper(Request $request){
         $Valiation = Validator::make($request->all(),[
             'name'=>'required|unique:developers,name',
-            'email'=>'required|unique:developers,email',
+            'email'=>'nullable|unique:developers,email',
             'start_date'=>'nullable|date',
             'end_date'=>'required|date',
             'image'=>'nullable',

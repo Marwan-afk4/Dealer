@@ -9,15 +9,13 @@ use App\Http\Controllers\Api\Auth\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+
 Route::post('/register',[AuthController::class, 'register']);
 Route::post('/login',[AuthController::class, 'login']);
 
 
 
-Route::middleware(['auth:sanctum', 'IsAdmin'])->group(function () {
+Route::middleware(['auth:sanctum', 'IsSuperAdmin'])->group(function () {
 
     Route::get('/admin/homepage',[HomepageController::class, 'homepage']);
 
@@ -58,6 +56,8 @@ Route::middleware(['auth:sanctum', 'IsAdmin'])->group(function () {
 //////////////////////////////////////////// Uptowns (units) ////////////////////////////////////////////////
 
     Route::get('/admin/units/{developer_id}',[UnitController::class, 'unitDeveloper']);
+
+
 
 
 });
