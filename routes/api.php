@@ -39,6 +39,8 @@ Route::middleware(['auth:sanctum', 'IsAdmin'])->group(function () {
 
     Route::get('/admin/admins',[UserController::class, 'getAdmins']);
 
+    Route::post('/admin/admins/add',[UserController::class, 'addAdmin']);
+
     Route::delete('/admin/admins/delete/{id}',[UserController::class, 'deleteadmin']);
 
 ///////////////////////////////////////////// Developer ///////////////////////////////////////
