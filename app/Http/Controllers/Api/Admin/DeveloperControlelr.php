@@ -51,6 +51,7 @@ class DeveloperControlelr extends Controller
             'start_date'=>'nullable|date',
             'end_date'=>'required|date',
             'image'=>'nullable',
+            'sales_man'=>'required',
             'places'=>'required|array',
             'places.*.place'=>'required',
         ]);
@@ -63,6 +64,7 @@ class DeveloperControlelr extends Controller
             'start_date'=>$request->start_date,
             'end_date'=>$request->end_date,
             'image'=>$request->image,
+            'sales_man'=>$request->sales_man
         ]);
         foreach($request->places as $place){
             Place::create([
