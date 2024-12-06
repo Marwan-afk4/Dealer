@@ -13,16 +13,22 @@ class Uptown extends Model
     protected $fillable = [
         'developer_id',
         'name',
-        'description',
         'apparment',
         'strat_price',
         'delivery_date',
         'sale_type',
         'image',
-        'status'
+        'status',
+        'space',
+        'bathroom',
+        'bed',
     ];
 
     public function developer(){
         return $this->belongsTo(Developer::class);
+    }
+
+    public function images(){
+        return $this->hasMany(UnitsImage::class);
     }
 }

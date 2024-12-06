@@ -57,6 +57,14 @@ Route::middleware(['auth:sanctum', 'IsSuperAdmin'])->group(function () {
 
     Route::get('/admin/units/{developer_id}',[UnitController::class, 'unitDeveloper']);
 
+    Route::post('/admin/units/add/{developer_id}',[UnitController::class, 'addUptown']);
+
+    Route::delete('/admin/units/delete/{id}',[UnitController::class, 'deleteUptown']);
+
+    Route::put('/admin/units/update/{id}',[UnitController::class, 'updateUptown']);
+
+    Route::delete('/admin/unit/image/delete/{id}',[UnitController::class, 'DeleteUptownImage']);
+
 
 
 
