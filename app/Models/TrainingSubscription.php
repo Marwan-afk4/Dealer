@@ -18,5 +18,6 @@ class TrainingSubscription extends Model
         'qualification',
         'governate',
         'experience_year',
+        'status',
     ];
 }

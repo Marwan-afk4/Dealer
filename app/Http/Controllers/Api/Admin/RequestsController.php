@@ -13,7 +13,7 @@ class RequestsController extends Controller
 
 //training contract
     public function getTrainingRequests(){
-        $training=TrainingSubscription::all();
+        $training=TrainingSubscription::where('status','pending')->get();
         $data=[
             'training'=>$training
         ];
@@ -23,9 +23,10 @@ class RequestsController extends Controller
     public function acceptTrainer($id){
         $training=TrainingSubscription::find($id);
         $user=User::find($training->user_id);
-        $user->role='trainer';
+        $user->role ='trainer';
+        $training->status = 'approved';
         $user->save();
-        $training->delete();
+        $training->save();
         return response()->json(['message' => 'Trainer accepted successfully']);
     }
 

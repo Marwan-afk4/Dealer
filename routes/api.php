@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\Admin\AdsController;
 use App\Http\Controllers\Api\Admin\DeveloperControlelr;
 use App\Http\Controllers\Api\Admin\HomepageController;
+use App\Http\Controllers\Api\Admin\MarketingAgencyController;
 use App\Http\Controllers\Api\Admin\RequestsController;
 use App\Http\Controllers\Api\Admin\UnitController;
 use App\Http\Controllers\Api\Admin\UserController;
@@ -78,6 +79,12 @@ Route::middleware(['auth:sanctum', 'IsSuperAdmin'])->group(function () {
 
 //////////////////////////////////////////// Requests (Leads) ////////////////////////////////////////////
 
+
+/////////////////////////////////////////// Marketing Agency //////////////////////////////////////////////
+
+    Route::get('/admin/marketing-agency',[MarketingAgencyController::class, 'getMarketingAgency']);
+
+    Route::post('/admin/marketing-agency/add',[MarketingAgencyController::class, 'addMarketagency']);
 
 
 
