@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\Admin\AdsController;
 use App\Http\Controllers\Api\Admin\DeveloperControlelr;
 use App\Http\Controllers\Api\Admin\HomepageController;
+use App\Http\Controllers\Api\Admin\RequestsController;
 use App\Http\Controllers\Api\Admin\UnitController;
 use App\Http\Controllers\Api\Admin\UserController;
 use App\Http\Controllers\Api\Auth\AuthController;
@@ -64,6 +65,18 @@ Route::middleware(['auth:sanctum', 'IsSuperAdmin'])->group(function () {
     Route::put('/admin/units/update/{id}',[UnitController::class, 'updateUptown']);
 
     Route::delete('/admin/unit/image/delete/{id}',[UnitController::class, 'DeleteUptownImage']);
+
+///////////////////////////////////////////////// Requests (Training) /////////////////////////////////////////
+
+    Route::get('/admin/requests/training',[RequestsController::class, 'getTrainingRequests']);
+
+    Route::put('/admin/request/training/accept/{id}',[RequestsController::class, 'acceptTrainer']);
+
+/////////////////////////////////////////////Requests (Complaints) /////////////////////////////////////////
+
+    Route::get('/admin/requests/complaints',[RequestsController::class, 'getComplaints']);
+
+    
 
 
 

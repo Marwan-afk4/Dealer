@@ -34,13 +34,13 @@ class DeveloperControlelr extends Controller
             'end_date'=>$developer->end_date,
             'total_profit'=>$uptownTotalprofit,
             'deals_done'=>$developer->deals_done,
+            'total_deals'=>$developer->total_deals,
             'places'=>$developer->place->map(function($place){
                 return [
                     'id'=>$place->id,
                     'place'=>$place->place,
                     'developer_id'=>$place->developer_id
-                ]
-                ;
+                ];
             }),
             'sales_man'=>$developer->sales_developer->map(function($sales_man){
                 return [
@@ -49,7 +49,7 @@ class DeveloperControlelr extends Controller
                     'phone'=>$sales_man->sale_phone
                 ];
             }),
-            'units'=>$uptownRelated
+            'units_list'=>$uptownRelated
         ]);
     }
 
@@ -149,7 +149,7 @@ class DeveloperControlelr extends Controller
                 ]);
             }
         }
-    
+
 }
     return response()->json(['message' => 'Developer updated successfully']);
     }

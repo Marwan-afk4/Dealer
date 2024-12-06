@@ -27,4 +27,8 @@ class User extends Model
         'password',
         'remember_token',
     ];
+
+    public function complaints(){
+        return $this->hasMany(Complaint::class);
+    }
 }
