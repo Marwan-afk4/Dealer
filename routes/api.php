@@ -86,6 +86,8 @@ Route::middleware(['auth:sanctum', 'IsSuperAdmin'])->group(function () {
 
     Route::post('/admin/marketing-agency/add',[MarketingAgencyController::class, 'addMarketagency']);
 
+    Route::delete('/admin/marketing-agency/delete/{id}',[MarketingAgencyController::class, 'deleteMarketingAgency']);
+
 
 
 });

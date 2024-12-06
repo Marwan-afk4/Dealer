@@ -39,4 +39,10 @@ class MarketingAgencyController extends Controller
 
         return response()->json(['message'=>'Marketing Agency Added Successfully']);
     }
+
+    public function deleteMarketingAgency($id){
+        $agency=MarketingAgency::find($id);
+        $agency->delete();
+        return response()->json(['message'=>'Marketing Agency Deleted Successfully']);
+    }
 }
