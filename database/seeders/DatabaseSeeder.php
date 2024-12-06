@@ -6,6 +6,7 @@ use App\Models\Ad;
 use App\Models\Brocker;
 use App\Models\Developer;
 use App\Models\Lead;
+use App\Models\MarketingAgency;
 use App\Models\Request;
 use App\Models\SalePeople;
 use App\Models\TrainingSubscription;
@@ -21,7 +22,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        TrainingSubscription::factory(5)->create();
+        MarketingAgency::factory(5)->create();
 
         // User::factory()->create([
         //     'name' => 'Test User',
