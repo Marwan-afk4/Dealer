@@ -31,4 +31,8 @@ class Uptown extends Model
     public function images(){
         return $this->hasMany(UnitsImage::class);
     }
+
+    public function salesman(){
+        return $this->hasMany(DeveloperSalesman::class);
+    }
 }

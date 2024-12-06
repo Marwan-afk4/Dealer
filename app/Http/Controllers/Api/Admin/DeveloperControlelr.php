@@ -4,14 +4,16 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Developer;
+use App\Models\DeveloperSalesman;
 use App\Models\Place;
+use App\Models\SalesDeveloper;
 use App\Models\Uptown;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class DeveloperControlelr extends Controller
 {
-    protected $updateDeveloper = ['name','email','start_date','end_date','image','sales_man'];
+    protected $updateDeveloper = ['name','email','start_date','end_date','image'];
 
 
     public function AllDevelopers(){
@@ -32,12 +34,19 @@ class DeveloperControlelr extends Controller
             'end_date'=>$developer->end_date,
             'total_profit'=>$uptownTotalprofit,
             'deals_done'=>$developer->deals_done,
-            'sales_man'=>$developer->sales_man,
             'places'=>$developer->place->map(function($place){
                 return [
                     'id'=>$place->id,
                     'place'=>$place->place,
                     'developer_id'=>$place->developer_id
+                ]
+                ;
+            }),
+            'sales_man'=>$developer->sales_developer->map(function($sales_man){
+                return [
+                    'id'=>$sales_man->id,
+                    'name'=>$sales_man->sale_name,
+                    'phone'=>$sales_man->sale_phone
                 ];
             }),
             'units'=>$uptownRelated
@@ -51,7 +60,9 @@ class DeveloperControlelr extends Controller
             'start_date'=>'nullable|date',
             'end_date'=>'required|date',
             'image'=>'nullable',
-            'sales_man'=>'required',
+            'sales_man' =>'required|array',
+            'sales_man.*.name'=>'required',
+            'sales_man.*.phone'=>'required',
             'places'=>'required|array',
             'places.*.place'=>'required',
         ]);
@@ -64,12 +75,18 @@ class DeveloperControlelr extends Controller
             'start_date'=>$request->start_date,
             'end_date'=>$request->end_date,
             'image'=>$request->image,
-            'sales_man'=>$request->sales_man
         ]);
         foreach($request->places as $place){
             Place::create([
                 'place'=>$place['place'],
                 'developer_id'=>$developer->id
+            ]);
+        }
+        foreach($request->sales_man as $sales_man){
+            SalesDeveloper::create([
+                'developer_id'=>$developer->id,
+                'sale_name'=>$sales_man['name'],
+                'sale_phone'=>$sales_man['phone']
             ]);
         }
         return response()->json(['message'=>'Developer Added Successfully']);
@@ -85,7 +102,6 @@ class DeveloperControlelr extends Controller
         'start_date' => 'nullable|date',
         'end_date' => 'nullable|date',
         'image' => 'nullable',
-        'sales_man' => 'required',
         'places' => 'nullable|array', // Ensure 'places' is an array
         'places.*.id' => 'nullable|exists:places,id', // Validate place IDs if provided
         'places.*.place' => 'required|string', // Validate place data
@@ -117,7 +133,24 @@ class DeveloperControlelr extends Controller
         }
     }
     $developer->place()->whereNotIn('id', $existingPlaceIds)->delete();
-
+///////////////////update sales_developer
+    if ($request->has('sales_man')) {
+        foreach ($request->sales_man as $sales_man) {
+            $salesDeveloper = $developer->sales_developer()->find($sales_man['id']);
+            if ($salesDeveloper) {
+                $salesDeveloper->update([
+                    'sale_name' => $sales_man['name'],
+                    'sale_phone' => $sales_man['phone'],
+                ]);
+            } else {
+                $developer->sales_developer()->create([
+                    'sale_name' => $sales_man['name'],
+                    'sale_phone' => $sales_man['phone'],
+                ]);
+            }
+        }
+    
+}
     return response()->json(['message' => 'Developer updated successfully']);
     }
 

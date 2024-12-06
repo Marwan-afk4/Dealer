@@ -13,4 +13,8 @@ class SalePeople extends Model
         'sale_name',
         'sale_phone',
     ];
+
+    public function salesman(){
+        return $this->hasMany(DeveloperSalesman::class);
+    }
 }

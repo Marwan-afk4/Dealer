@@ -21,7 +21,6 @@ class Developer extends Model
         'start_date',
         'end_date',
         'image',
-        'sales_man'
     ];
 
     public function place(){
@@ -32,5 +31,10 @@ class Developer extends Model
         return $this->hasMany(Uptown::class);
     }
 
-    
+
+    public function sales_developer(){
+        return $this->hasMany(SalesDeveloper::class);
+    }
+
+
 }

@@ -20,6 +20,7 @@ class UnitController extends Controller
         $units = Uptown::where('developer_id', $developer_id)->get();
         $developer->update(['units'=>$developerUptownCount]);
 
+
         $data = [
             'units'=>$developerUptownCount,
             'units_data'=>$units
@@ -66,9 +67,16 @@ class UnitController extends Controller
                 ]);
             }
         }
+        $this->updateDeveloperUnit($developer_id);
 
         return response()->json(['message' => 'Unit added successfully', 'uptown' => $uptown]);
 
+    }
+
+    public function updateDeveloperUnit($developer_id){
+        $unitcount=Uptown::where('developer_id', $developer_id)->count();
+        $developer=Developer::find($developer_id);
+        $developer->update(['units'=>$unitcount]);
     }
 
     public function deleteUptown($id){
