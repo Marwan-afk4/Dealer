@@ -22,7 +22,8 @@ class Uptown extends Model
         'space',
         'bathroom',
         'bed',
-        'google_map',
+        'latitude',
+        'longitude',
     ];
 
     public function developer(){

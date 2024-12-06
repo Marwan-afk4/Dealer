@@ -13,10 +13,10 @@ class MarketingAgency extends Model
     protected $fillable = [
         'name',
         'email',
-        'phone',  //rg3ha varchar
+        'phone',
         'start_date',
         'end_date',
         'image',
-        'total_leads', //3aiz a8irha from total_deals to total leads in production
+        'total_leads', 
     ];
 }
