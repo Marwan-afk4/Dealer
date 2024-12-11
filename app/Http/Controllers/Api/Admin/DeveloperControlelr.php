@@ -22,35 +22,39 @@ class DeveloperControlelr extends Controller
     }
 
     public function developer($id){
-        $developer = Developer::with('place')->findOrFail($id);
-        //uptown units with this develpoer
-        $uptownRelated = Uptown::where('developer_id', $id)->get();
-        $uptownTotalprofit = Uptown::where('developer_id', $id)
-        ->where('status', 'sold')
-        ->sum('strat_price');
-        $developer->update(['total_profit'=>$uptownTotalprofit]);
-        return response()->json([
-            'start_date'=>$developer->start_date,
-            'end_date'=>$developer->end_date,
-            'total_profit'=>$uptownTotalprofit,
-            'deals_done'=>$developer->deals_done,
-            'total_deals'=>$developer->total_deals,
-            'places'=>$developer->place->map(function($place){
-                return [
-                    'id'=>$place->id,
-                    'place'=>$place->place,
-                    'developer_id'=>$place->developer_id
-                ];
-            }),
-            'sales_man'=>$developer->sales_developer->map(function($sales_man){
-                return [
-                    'id'=>$sales_man->id,
-                    'name'=>$sales_man->sale_name,
-                    'phone'=>$sales_man->sale_phone
-                ];
-            }),
-            'units_list'=>$uptownRelated
-        ]);
+        $developer = Developer::with('place','sales_developer')->findOrFail($id);
+        return response()->json($developer);
+
+        
+        // $developer = Developer::with('place')->findOrFail($id);
+        // //uptown units with this develpoer
+        // $uptownRelated = Uptown::where('developer_id', $id)->get();
+        // $uptownTotalprofit = Uptown::where('developer_id', $id)
+        // ->where('status', 'sold')
+        // ->sum('strat_price');
+        // $developer->update(['total_profit'=>$uptownTotalprofit]);
+        // return response()->json([
+        //     'start_date'=>$developer->start_date,
+        //     'end_date'=>$developer->end_date,
+        //     'total_profit'=>$uptownTotalprofit,
+        //     'deals_done'=>$developer->deals_done,
+        //     'total_deals'=>$developer->total_deals,
+        //     'places'=>$developer->place->map(function($place){
+        //         return [
+        //             'id'=>$place->id,
+        //             'place'=>$place->place,
+        //             'developer_id'=>$place->developer_id
+        //         ];
+        //     }),
+        //     'sales_man'=>$developer->sales_developer->map(function($sales_man){
+        //         return [
+        //             'id'=>$sales_man->id,
+        //             'name'=>$sales_man->sale_name,
+        //             'phone'=>$sales_man->sale_phone
+        //         ];
+        //     }),
+        //     'units_list'=>$uptownRelated
+        // ]);
     }
 
     public function addDeveloper(Request $request){

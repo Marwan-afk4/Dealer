@@ -52,4 +52,5 @@ class CompundController extends Controller
         return response()->json(['message'=>'Compound Deleted Successfully']);
     }
 
+
 }
