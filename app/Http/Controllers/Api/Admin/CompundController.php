@@ -45,4 +45,11 @@ class CompundController extends Controller
         ]);
         return response()->json(['message'=>'Compound Added Successfully']);
     }
+
+    public function deleteCompound($id){
+        $compound = Compound::find($id);
+        $compound->delete();
+        return response()->json(['message'=>'Compound Deleted Successfully']);
+    }
+
 }

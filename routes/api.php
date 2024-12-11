@@ -95,6 +95,8 @@ Route::middleware(['auth:sanctum', 'IsSuperAdmin'])->group(function () {
 
     Route::post('/admin/compound/add',[CompundController::class, 'addCompound']);
 
+    Route::delete('/admin/compound/delete/{id}',[CompundController::class, 'deleteCompound']);
+
 
 
 });
