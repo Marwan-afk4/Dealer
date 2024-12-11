@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Compound;
 use App\Models\Developer;
 use App\Models\DeveloperSalesman;
 use App\Models\Place;
@@ -23,8 +24,13 @@ class DeveloperControlelr extends Controller
 
     public function developer($id){
         $developer = Developer::with('place','sales_developer')->findOrFail($id);
-        return response()->json($developer);
 
+        $developerCompounds=Compound::where('developer_id',$id)->get();
+
+        return response()->json([
+            'developer'=>$developer,
+            'developerCompounds'=>$developerCompounds
+        ]);
         
         // $developer = Developer::with('place')->findOrFail($id);
         // //uptown units with this develpoer
