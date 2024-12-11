@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Admin\AdsController;
+use App\Http\Controllers\Api\Admin\CompundController;
 use App\Http\Controllers\Api\Admin\DeveloperControlelr;
 use App\Http\Controllers\Api\Admin\HomepageController;
 use App\Http\Controllers\Api\Admin\MarketingAgencyController;
@@ -87,6 +88,12 @@ Route::middleware(['auth:sanctum', 'IsSuperAdmin'])->group(function () {
     Route::post('/admin/marketing-agency/add',[MarketingAgencyController::class, 'addMarketagency']);
 
     Route::delete('/admin/marketing-agency/delete/{id}',[MarketingAgencyController::class, 'deleteMarketingAgency']);
+
+//////////////////////////////////////////// Compounds /////////////////////////////////////////////////////////
+
+    Route::get('/admin/compounds',[CompundController::class, 'compounds']);
+
+    Route::post('/admin/compound/add',[CompundController::class, 'addCompound']);
 
 
 

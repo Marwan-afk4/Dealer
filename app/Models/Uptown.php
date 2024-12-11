@@ -11,7 +11,8 @@ class Uptown extends Model
 
 
     protected $fillable = [
-        'developer_id',
+        'developer_id', //3aiz ashil el coulmn da mn el production
+        'compound_id',
         'name',
         'apparment',
         'strat_price',
