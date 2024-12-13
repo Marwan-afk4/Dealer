@@ -58,9 +58,9 @@ Route::middleware(['auth:sanctum', 'IsSuperAdmin'])->group(function () {
 
 //////////////////////////////////////////// Uptowns (units) ////////////////////////////////////////////////
 
-    Route::get('/admin/units/{developer_id}',[UnitController::class, 'unitDeveloper']);
+    Route::get('/admin/units/{compound_id}',[UnitController::class, 'unitDeveloper']);
 
-    Route::post('/admin/units/add/{developer_id}',[UnitController::class, 'addUptown']);
+    Route::post('/admin/units/add/{compound_id}',[UnitController::class, 'addUptown']);
 
     Route::delete('/admin/units/delete/{id}',[UnitController::class, 'deleteUptown']);
 

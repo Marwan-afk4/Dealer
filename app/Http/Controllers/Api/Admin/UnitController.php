@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Compound;
 use App\Models\Developer;
 use App\Models\UnitsImage;
 use App\Models\Uptown;
@@ -14,15 +15,15 @@ class UnitController extends Controller
 
     protected $updateUptown =['name','apparment','space','bathroom','bed','strat_price','delivery_date','sale_type'];
 
-    public function unitDeveloper($developer_id){
-        $developer = Developer::find($developer_id);
-        $developerUptownCount = Uptown::where('developer_id', $developer_id)->count();
-        $units = Uptown::where('developer_id', $developer_id)->get();
-        $developer->update(['units'=>$developerUptownCount]);
+    public function unitDeveloper($compound_id){
+        $compound = Compound::find($compound_id);
+        $compoundUptownCount = Uptown::where('compound_id', $compound_id)->count();
+        $units = Uptown::where('compound_id', $compound_id)->get();
+        $compound->update(['units'=>$compoundUptownCount]);
 
 
         $data = [
-            'units'=>$developerUptownCount,
+            'units'=>$compoundUptownCount,
             'units_data'=>$units
         ];
 
@@ -30,7 +31,7 @@ class UnitController extends Controller
 
     }
 
-    public function addUptown(Request $request,$developer_id){
+    public function addUptown(Request $request,$compound_id){
         $validation = Validator::make($request->all(), [
             'name' => 'required',
             'apparment' => 'required',
@@ -48,7 +49,7 @@ class UnitController extends Controller
             return response()->json(['errors' => $validation->errors()], 422);
         }
         $uptown = Uptown::create([
-            'developer_id' => $developer_id,
+            'compound_id' => $compound_id,
             'name' => $request->name,
             'apparment' => $request->apparment,
             'space' => $request->space,
@@ -67,16 +68,16 @@ class UnitController extends Controller
                 ]);
             }
         }
-        $this->updateDeveloperUnit($developer_id);
+        $this->updatecompoundUnit($compound_id);
 
         return response()->json(['message' => 'Unit added successfully', 'uptown' => $uptown]);
 
     }
 
-    public function updateDeveloperUnit($developer_id){
-        $unitcount=Uptown::where('developer_id', $developer_id)->count();
-        $developer=Developer::find($developer_id);
-        $developer->update(['units'=>$unitcount]);
+    public function updatecompoundUnit($compound_id){
+        $unitcount=Uptown::where('compound_id', $compound_id)->count();
+        $compound=Compound::find($compound_id);
+        $compound->update(['units'=>$unitcount]);
     }
 
     public function deleteUptown($id){
