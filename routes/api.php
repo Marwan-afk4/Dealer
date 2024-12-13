@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\Admin\CompundController;
 use App\Http\Controllers\Api\Admin\DeveloperControlelr;
 use App\Http\Controllers\Api\Admin\HomepageController;
 use App\Http\Controllers\Api\Admin\MarketingAgencyController;
+use App\Http\Controllers\Api\Admin\PlanController;
 use App\Http\Controllers\Api\Admin\RequestsController;
 use App\Http\Controllers\Api\Admin\UnitController;
 use App\Http\Controllers\Api\Admin\UserController;
@@ -97,6 +98,15 @@ Route::middleware(['auth:sanctum', 'IsSuperAdmin'])->group(function () {
 
     Route::delete('/admin/compound/delete/{id}',[CompundController::class, 'deleteCompound']);
 
+///////////////////////////////////////////// Plans /////////////////////////////////////////////////////////
+
+    Route::get('/admin/plans',[PlanController::class, 'plans']);
+
+    Route::post('/admin/plan/add',[PlanController::class, 'addplan']);
+
+    Route::put('/admin/plan/update/{id}',[PlanController::class, 'updateplan']);
+
+    Route::delete('/admin/plan/delete/{id}',[PlanController::class, 'deleteplan']);
 
 
 });
