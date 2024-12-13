@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 
 class PlanController extends Controller
 {
-    protected $updatePlans=['name','count_of_leads','period_in_days','price','discount_type','discount_value'];
+    protected $updatePlans=['name','count_of_leads','period_in_days','price','discount_type','discount_value','price_after_discount'];
 
     public function plans(){
         $plas= Plan::all();
@@ -54,11 +54,48 @@ class PlanController extends Controller
 
     }
 
-    public function updateplan(Request $request,$id){
-        $plan = Plan::find($id);
-        $plan->update($request->only($this->updatePlans));
-        return response()->json(['message'=>'Plan Updated Successfully']);
+    public function updateplan(Request $request, $id)
+{
+    $plan = Plan::find($id);
+
+    if (!$plan) {
+        return response()->json(['message' => 'Plan not found'], 404);
     }
+
+    // Validate the request
+    $validation = Validator::make($request->all(), [
+        'name' => 'sometimes|required',
+        'count_of_leads' => 'sometimes|required|integer',
+        'period_in_days' => 'sometimes|required|integer',
+        'price' => 'sometimes|required|numeric',
+        'discount_type' => 'nullable|in:fixed,percentage',
+        'discount_value' => 'nullable|numeric',
+    ]);
+
+    if ($validation->fails()) {
+        return response()->json(['errors' => $validation->errors()], 401);
+    }
+
+    // Calculate the new price_after_discount if price or discount details are being updated
+    $data = $request->only($this->updatePlans);
+    if ($request->has('price') || $request->has('discount_type') || $request->has('discount_value')) {
+        $price = $request->price ?? $plan->price;
+        $discount_type = $request->discount_type ?? $plan->discount_type;
+        $discount_value = $request->discount_value ?? $plan->discount_value;
+
+        if ($discount_type === 'fixed') {
+            $data['price_after_discount'] = $price - $discount_value;
+        } elseif ($discount_type === 'percentage') {
+            $data['price_after_discount'] = $price - ($price * $discount_value / 100);
+        }
+    }
+
+    // Update the plan
+    $plan->update($data);
+
+    return response()->json(['message' => 'Plan Updated Successfully']);
+}
+
 
     public function deleteplan($id){
         $plan = Plan::find($id);
