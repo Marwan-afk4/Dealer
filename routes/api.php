@@ -108,5 +108,7 @@ Route::middleware(['auth:sanctum', 'IsSuperAdmin'])->group(function () {
 
     Route::delete('/admin/plan/delete/{id}',[PlanController::class, 'deleteplan']);
 
+    
+
 
 });
