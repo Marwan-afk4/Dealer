@@ -25,6 +25,8 @@ class Uptown extends Model
         'bed',
         'latitude',
         'longitude',
+        'floor_plan_image',
+        'master_plan_image'
     ];
 
     public function developer(){

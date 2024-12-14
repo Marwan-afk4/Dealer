@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Validator;
 class UnitController extends Controller
 {
 
-    protected $updateUptown =['name','apparment','space','bathroom','bed','strat_price','delivery_date','sale_type'];
+    protected $updateUptown =['name','apparment','space','bathroom','bed','strat_price','delivery_date','sale_type','master_plan_image','floor_plan_image'];
 
     public function unitDeveloper($compound_id){
         $compound = Compound::find($compound_id);
@@ -41,6 +41,8 @@ class UnitController extends Controller
             'strat_price' => 'required|integer',
             'delivery_date' => 'nullable|date',
             'sale_type' => 'required',
+            'master_plan_image' => 'nullable',
+            'floor_plan_image' => 'nullable',
             'images' => 'nullable|array',
             'images.*' => 'nullable',
         ]);
@@ -58,6 +60,8 @@ class UnitController extends Controller
             'strat_price' => $request->strat_price,
             'delivery_date' => $request->delivery_date,
             'sale_type' => $request->sale_type,
+            'master_plan_image' => $request->master_plan_image,
+            'floor_plan_image' => $request->floor_plan_image
         ]);
 
         if ($request->has('images')) {
@@ -98,6 +102,8 @@ class UnitController extends Controller
             'strat_price' => 'nullable|integer',
             'delivery_date' => 'nullable|date',
             'sale_type' => 'nullable',
+            'master_plan_image' => 'nullable',
+            'floor_plan_image' => 'nullable',
         ]);
 
         if ($validation->fails()) {
