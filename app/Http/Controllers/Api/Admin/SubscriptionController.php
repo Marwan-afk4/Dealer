@@ -11,7 +11,7 @@ class SubscriptionController extends Controller
 {
 
 
-    public function getSubscribers(Request $request){
+    public function getSubscribers(){
         $subscribers = Subscribtion::with('brocker')
         ->get();
         $data = $subscribers->map(function ($subscriber) {
