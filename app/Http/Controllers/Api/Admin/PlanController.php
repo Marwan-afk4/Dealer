@@ -47,7 +47,7 @@ class PlanController extends Controller
             'price' => $request->price,
             'discount_type' => $request->discount_type,
             'discount_value' => $request->discount_value,
-            'price_after_discount' => $price_after_discount
+            'price_after_discount' => $price_after_discount ?? $request->price,
         ]);
 
         return response()->json(['message'=>'Plan Added Successfully']);

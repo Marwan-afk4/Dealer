@@ -22,7 +22,8 @@ class User extends Model
         'provider_id',
         'role',
         'qualification',
-        'experience_year'
+        'experience_year',
+        'governce'
     ];
 
     protected $hidden = [

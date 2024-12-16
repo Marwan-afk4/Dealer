@@ -25,9 +25,12 @@ class SubscriptionController extends Controller
                 'brocker_profit'=>$subscriber->brocker->profit,
                 'brocker_leads'=>$subscriber->brocker->number_of_deals,
                 'brocker_deals_done'=>$subscriber->brocker->deals_done,
+                'brocker_experience'=>$subscriber->brocker->user->experience_year,
+                'brocker_governate'=>$subscriber->brocker->user->governce,
                 'plan_id'=>$subscriber->brocker->plan_id,
                 'plan_name'=>$subscriber->brocker->plan->name,
-                'subs_end_date'=>$subscriber->end_date
+                'subs_end_date'=>$subscriber->end_date,
+                'plan_price'=>$subscriber->brocker->plan->price_after_discount
             ];
         });
         return response()->json(['subscribers'=>$data]);
