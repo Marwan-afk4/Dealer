@@ -20,7 +20,9 @@ class User extends Model
         'password',
         'provider',
         'provider_id',
-        'role'
+        'role',
+        'qualification',
+        'experience_year'
     ];
 
     protected $hidden = [
@@ -30,5 +32,9 @@ class User extends Model
 
     public function complaints(){
         return $this->hasMany(Complaint::class);
+    }
+
+    public function brockers(){
+        return $this->hasMany(Brocker::class);
     }
 }

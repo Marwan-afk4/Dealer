@@ -17,6 +17,8 @@ class AuthController extends Controller
             'email' => 'required|email|unique:users',
             'phone'=> 'required|unique:users',
             'password' => 'required|min:6',
+            'qualification' => 'nullable',
+            'experience_year' => 'nullable|integer',
         ]);
         if($validation->fails()) {
             return response()->json(['error' => $validation->errors()], 401);
@@ -28,6 +30,8 @@ class AuthController extends Controller
             'email' => $request->email,
             'phone' => $request->phone,
             'password' => Hash::make($request->password),
+            'qualification' => $request->qualification,
+            'experience_year' => $request->experience_year,
             'role' => 'user'
         ]);
         $token = $user->createToken('auth_token')->plainTextToken;

@@ -18,4 +18,10 @@ class Plan extends Model
         'price_after_discount'
     ];
 
+
+
+    public function brockers(){
+        return $this->hasMany(Brocker::class);
+    }
+
 }

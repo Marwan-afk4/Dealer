@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\Admin\HomepageController;
 use App\Http\Controllers\Api\Admin\MarketingAgencyController;
 use App\Http\Controllers\Api\Admin\PlanController;
 use App\Http\Controllers\Api\Admin\RequestsController;
+use App\Http\Controllers\Api\Admin\SubscriptionController;
 use App\Http\Controllers\Api\Admin\UnitController;
 use App\Http\Controllers\Api\Admin\UserController;
 use App\Http\Controllers\Api\Auth\AuthController;
@@ -79,9 +80,6 @@ Route::middleware(['auth:sanctum', 'IsSuperAdmin'])->group(function () {
 
     Route::get('/admin/requests/complaints',[RequestsController::class, 'getComplaints']);
 
-//////////////////////////////////////////// Requests (Leads) ////////////////////////////////////////////
-
-
 /////////////////////////////////////////// Marketing Agency //////////////////////////////////////////////
 
     Route::get('/admin/marketing-agency',[MarketingAgencyController::class, 'getMarketingAgency']);
@@ -108,7 +106,13 @@ Route::middleware(['auth:sanctum', 'IsSuperAdmin'])->group(function () {
 
     Route::delete('/admin/plan/delete/{id}',[PlanController::class, 'deleteplan']);
 
-    
+/////////////////////////////////////////////// Subscribtion ///////////////////////////////////////////////////
+
+    Route::get('/admin/subscribtion',[SubscriptionController::class, 'getSubscribers']);
+
+    Route::delete('/admin/subscribtion/delete/{id}',[SubscriptionController::class, 'deleteSubscribers']);
+
+
 
 
 });

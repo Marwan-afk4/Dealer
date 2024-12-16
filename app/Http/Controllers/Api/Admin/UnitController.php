@@ -18,7 +18,9 @@ class UnitController extends Controller
     public function unitDeveloper($compound_id){
         $compound = Compound::find($compound_id);
         $compoundUptownCount = Uptown::where('compound_id', $compound_id)->count();
-        $units = Uptown::where('compound_id', $compound_id)->get();
+        $units = Uptown::where('compound_id', $compound_id)
+        ->with('unitImages')
+        ->get();
         $compound->update(['units'=>$compoundUptownCount]);
 
 

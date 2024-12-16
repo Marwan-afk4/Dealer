@@ -11,7 +11,18 @@ class Brocker extends Model
 
     protected $fillable=[
         'user_id',
+        'plan_id',
         'profit',
-        'number_of_deals'
+        'number_of_deals',
+        'deals_done'
     ];
+
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
+    public function plan(){
+        return $this->belongsTo(Plan::class);
+    }
 }
