@@ -5,6 +5,8 @@ use App\Http\Controllers\Api\Admin\CompundController;
 use App\Http\Controllers\Api\Admin\DeveloperControlelr;
 use App\Http\Controllers\Api\Admin\HomepageController;
 use App\Http\Controllers\Api\Admin\MarketingAgencyController;
+use App\Http\Controllers\Api\Admin\PaymentMethodController;
+use App\Http\Controllers\Api\Admin\PaymentsController;
 use App\Http\Controllers\Api\Admin\PlanController;
 use App\Http\Controllers\Api\Admin\RequestsController;
 use App\Http\Controllers\Api\Admin\SubscriptionController;
@@ -112,7 +114,21 @@ Route::middleware(['auth:sanctum', 'IsSuperAdmin'])->group(function () {
 
     Route::delete('/admin/subscribtion/delete/{id}',[SubscriptionController::class, 'deleteSubscribers']);
 
+///////////////////////////////////////////////// Payment Method /////////////////////////////////////////////////////
 
+    Route::get('/admin/payment-methods',[PaymentMethodController::class, 'getPaymentMethods']);
+
+    Route::post('/admin/payment-method/add',[PaymentMethodController::class, 'createPaymentMethod']);
+
+    Route::delete('/admin/payment-method/delete/{id}',[PaymentMethodController::class, 'deletePaymentMethod']);
+
+////////////////////////////////////////////////// Pyaments /////////////////////////////////////////////////////
+
+    Route::post('/admin/payments/create-subscription',[PaymentsController::class, 'createSubscription']);
+
+    Route::get('/admin/payments/pending-payments',[PaymentsController::class, 'getPendingPayments']);
+
+    Route::put('/admin/payments/approve-payment/{payment_id}',[PaymentsController::class, 'approvePayment']);
 
 
 });

@@ -24,4 +24,8 @@ class Plan extends Model
         return $this->hasMany(Brocker::class);
     }
 
+    public function payments(){
+        return $this->hasMany(Payment::class);
+    }
+
 }
