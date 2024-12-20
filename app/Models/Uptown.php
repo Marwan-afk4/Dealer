@@ -44,4 +44,12 @@ class Uptown extends Model
     public function unitimages(){
         return $this->hasMany(UnitsImage::class);
     }
+
+    public function compound(){
+        return $this->belongsTo(Compound::class);
+    }
+
+    public function leads(){
+        return $this->hasMany(Lead::class);
+    }
 }

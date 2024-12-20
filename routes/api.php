@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\Api\Admin\AdsController;
+use App\Http\Controllers\Api\Admin\BrokerController;
 use App\Http\Controllers\Api\Admin\CompundController;
 use App\Http\Controllers\Api\Admin\DeveloperControlelr;
 use App\Http\Controllers\Api\Admin\HomepageController;
+use App\Http\Controllers\Api\Admin\LeadController;
 use App\Http\Controllers\Api\Admin\MarketingAgencyController;
 use App\Http\Controllers\Api\Admin\PaymentMethodController;
 use App\Http\Controllers\Api\Admin\PaymentsController;
@@ -129,6 +131,18 @@ Route::middleware(['auth:sanctum', 'IsSuperAdmin'])->group(function () {
     Route::get('/admin/payments/pending-payments',[PaymentsController::class, 'getPendingPayments']);
 
     Route::put('/admin/payments/approve-payment/{payment_id}',[PaymentsController::class, 'approvePayment']);
+
+/////////////////////////////////////////////////// Leads //////////////////////////////////////////////////////////////////
+
+    Route::get('/admin/leads',[LeadController::class, 'getLeads']);
+
+    Route::delete('/admin/lead/delete/{id}',[LeadController::class, 'deleteLead']);
+
+    Route::post('/admin/lead/add',[LeadController::class, 'AddLead']);
+
+    ////////////////////////////////////////////// AASSIGN LEAD TO BROKER ////////////////////////////////////////////////
+
+    Route::post('/admin/broker/add-leads/{id}',[BrokerController::class, 'addLeadtoBroker']);
 
 
 });

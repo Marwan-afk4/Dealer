@@ -14,4 +14,8 @@ class Compound extends Model
         'image',
         'units',
     ];
+
+    public function uptwons(){
+        return $this->hasMany(Uptown::class);
+    }
 }

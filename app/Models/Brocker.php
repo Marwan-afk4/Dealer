@@ -25,4 +25,8 @@ class Brocker extends Model
     public function plan(){
         return $this->belongsTo(Plan::class);
     }
+
+    public function leads(){
+        return $this->hasMany(Lead::class);
+    }
 }

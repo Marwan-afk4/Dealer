@@ -17,6 +17,10 @@ class MarketingAgency extends Model
         'start_date',
         'end_date',
         'image',
-        'total_leads', 
+        'total_leads',
     ];
+
+    public function leads(){
+        return $this->hasMany(Lead::class);
+    }
 }
