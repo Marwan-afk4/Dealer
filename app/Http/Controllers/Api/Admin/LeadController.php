@@ -46,8 +46,7 @@ class LeadController extends Controller
     public function AddLead(Request $request){
         $validation = Validator::make($request->all(), [
             'marketing_agency_id' => 'required|exists:marketing_agencies,id',
-            'brocker_id' => 'required|exists:brockers,id',
-            'uptown_id' => 'required|exists:units,id',
+            'interested_place'=>'nullable',
             'lead_name' => 'required',
             'lead_phone' => 'required',
             'brocker_start_date' => 'nullable|date',
@@ -61,8 +60,7 @@ class LeadController extends Controller
         }
         $lead = Lead::create([
             'marketing_agency_id' => $request->marketing_agency_id,
-            'brocker_id' => $request->brocker_id,
-            'uptown_id' => $request->uptown_id,
+            'interested_place' => $request->interested_place ?? null,
             'lead_name' => $request->lead_name,
             'lead_phone' => $request->lead_phone,
             'brocker_start_date' => $request->brocker_start_date,
@@ -76,12 +74,9 @@ class LeadController extends Controller
     public function getIDS(){
         $marketing_agencies = MarketingAgency::all();
         $brockers = Brocker::all();
-        $units = Uptown::all();
-
         $data=[
             'marketing_agencies'=>$marketing_agencies,
             'brockers'=>$brockers,
-            'units'=>$units
         ];
         return response()->json($data);
     }
