@@ -140,6 +140,8 @@ Route::middleware(['auth:sanctum', 'IsSuperAdmin'])->group(function () {
 
     Route::post('/admin/lead/add',[LeadController::class, 'AddLead']);
 
+    Route::get('/admin/lead/ids',[LeadController::class, 'getIDS']);
+
     ////////////////////////////////////////////// AASSIGN LEAD TO BROKER ////////////////////////////////////////////////
 
     Route::post('/admin/broker/add-leads/{id}',[BrokerController::class, 'addLeadtoBroker']);
