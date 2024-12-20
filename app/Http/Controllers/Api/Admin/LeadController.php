@@ -24,12 +24,6 @@ class LeadController extends Controller
                 'lead_status' => $lead->status,
                 'marketing_agency_id'=> $lead->marketing_agency_id,
                 'marketing_agency_name' => $lead->marketing_agency->name,
-                'unit_id' => $lead->uptown_id,
-                'unit_name' => $lead->uptown->name,
-                'brocker_id' => $lead->brocker_id,
-                'brocker_name' => $lead->brocker->user->first_name.' '.$lead->brocker->user->last_name,
-                'brocker_start_date' => $lead->brocker_start_date,
-                'brocker_end_date' => $lead->brocker_end_date,
                 'sales_man_name' => $lead->sales_man_name,
                 'sales_man_phone' => $lead->sales_man_phone
             ];
@@ -49,8 +43,6 @@ class LeadController extends Controller
             'interested_place'=>'nullable',
             'lead_name' => 'required',
             'lead_phone' => 'required',
-            'brocker_start_date' => 'nullable|date',
-            'brocker_end_date' => 'nullable|date',
             'sales_man_name' => 'nullable',
             'sales_man_phone' => 'nullable',
         ]);
@@ -63,8 +55,6 @@ class LeadController extends Controller
             'interested_place' => $request->interested_place ?? null,
             'lead_name' => $request->lead_name,
             'lead_phone' => $request->lead_phone,
-            'brocker_start_date' => $request->brocker_start_date,
-            'brocker_end_date' => $request->brocker_end_date,
             'sales_man_name' => $request->sales_man_name,
             'sales_man_phone' => $request->sales_man_phone
         ]);
