@@ -66,7 +66,6 @@ class LeadController extends Controller
         $brockers = Brocker::all();
         $data=[
             'marketing_agencies'=>$marketing_agencies,
-            'brockers'=>$brockers,
         ];
         return response()->json($data);
     }
