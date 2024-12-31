@@ -50,6 +50,7 @@ class LeadController extends Controller
         if ($validation->fails()) {
             return response()->json(['errors' => $validation->errors()], 401);
         }
+        $marketing_agency = MarketingAgency::find($request->marketing_agency_id);
         $lead = Lead::create([
             'marketing_agency_id' => $request->marketing_agency_id,
             'interested_place' => $request->interested_place ?? null,
@@ -58,6 +59,8 @@ class LeadController extends Controller
             'sales_man_name' => $request->sales_man_name,
             'sales_man_phone' => $request->sales_man_phone
         ]);
+        $marketing_agency->total_leads = $marketing_agency->total_leads + 1;
+        $marketing_agency->save();
         return response()->json(['message'=>'Lead added successfully']);
     }
 
