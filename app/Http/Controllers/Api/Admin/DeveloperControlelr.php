@@ -129,8 +129,7 @@ class DeveloperControlelr extends Controller
     // Update the developer's basic information
     $developer->update($request->only(['name', 'email', 'start_date', 'end_date', 'image']));
 
-    // Update places
-    $existingPlaceIds = [];
+    // Update places if provided in the request
     if ($request->has('places')) {
         foreach ($request->places as $placeData) {
             if (isset($placeData['id']) && $placeData['id']) {
@@ -138,19 +137,15 @@ class DeveloperControlelr extends Controller
                 $place = $developer->place()->find($placeData['id']);
                 if ($place) {
                     $place->update(['place' => $placeData['place']]);
-                    $existingPlaceIds[] = $place->id;
                 }
             } else {
                 // Create new place
-                $newPlace = $developer->place()->create(['place' => $placeData['place']]);
-                $existingPlaceIds[] = $newPlace->id;
+                $developer->place()->create(['place' => $placeData['place']]);
             }
         }
     }
-    $developer->place()->whereNotIn('id', $existingPlaceIds)->delete();
 
-    // Update sales developers
-    $existingSalesIds = [];
+    // Update sales developers if provided in the request
     if ($request->has('sales_man')) {
         foreach ($request->sales_man as $salesMan) {
             if (isset($salesMan['id']) && $salesMan['id']) {
@@ -161,23 +156,22 @@ class DeveloperControlelr extends Controller
                         'sale_name' => $salesMan['name'],
                         'sale_phone' => $salesMan['phone'],
                     ]);
-                    $existingSalesIds[] = $salesDeveloper->id;
                 }
             } else {
                 // Create new sales developer
-                $newSales = $developer->sales_developer()->create([
+                $developer->sales_developer()->create([
                     'sale_name' => $salesMan['name'],
                     'sale_phone' => $salesMan['phone'],
                 ]);
-                $existingSalesIds[] = $newSales->id;
             }
         }
     }
-    $developer->sales_developer()->whereNotIn('id', $existingSalesIds)->delete();
 
     return response()->json([
-        'message' => 'Developer updated successfully']);
+        'message' => 'Developer updated successfully',
+    ]);
 }
+
 
 
     public function deleteDeveloper($id){
