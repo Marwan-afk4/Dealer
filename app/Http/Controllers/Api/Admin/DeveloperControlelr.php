@@ -31,7 +31,7 @@ class DeveloperControlelr extends Controller
             'developer'=>$developer,
             'developerCompounds'=>$developerCompounds
         ]);
-        
+
         // $developer = Developer::with('place')->findOrFail($id);
         // //uptown units with this develpoer
         // $uptownRelated = Uptown::where('developer_id', $id)->get();
@@ -102,8 +102,9 @@ class DeveloperControlelr extends Controller
         return response()->json(['message'=>'Developer Added Successfully']);
     }
 
-    public function updateDeveloper(Request $request,$id){
-        $developer = Developer::findOrFail($id);
+    public function updateDeveloper(Request $request, $id)
+{
+    $developer = Developer::findOrFail($id);
 
     // Validate the incoming request
     $validation = Validator::make($request->all(), [
@@ -112,9 +113,13 @@ class DeveloperControlelr extends Controller
         'start_date' => 'nullable|date',
         'end_date' => 'nullable|date',
         'image' => 'nullable',
-        'places' => 'nullable|array', // Ensure 'places' is an array
-        'places.*.id' => 'nullable|exists:places,id', // Validate place IDs if provided
-        'places.*.place' => 'required|string', // Validate place data
+        'places' => 'nullable|array',
+        'places.*.id' => 'nullable|exists:places,id', // Ensure valid place IDs if provided
+        'places.*.place' => 'required|string',
+        'sales_man' => 'nullable|array',
+        'sales_man.*.id' => 'nullable|exists:sales_developers,id', // Ensure valid sales IDs if provided
+        'sales_man.*.name' => 'required|string',
+        'sales_man.*.phone' => 'required|string',
     ]);
 
     if ($validation->fails()) {
@@ -122,47 +127,58 @@ class DeveloperControlelr extends Controller
     }
 
     // Update the developer's basic information
-    $developer->update($request->only($this->updateDeveloper));
+    $developer->update($request->only(['name', 'email', 'start_date', 'end_date', 'image']));
 
     // Update places
     $existingPlaceIds = [];
     if ($request->has('places')) {
         foreach ($request->places as $placeData) {
-            if (isset($placeData['id'])) {
+            if (isset($placeData['id']) && $placeData['id']) {
                 // Update existing place
                 $place = $developer->place()->find($placeData['id']);
                 if ($place) {
                     $place->update(['place' => $placeData['place']]);
-                    $existingPlaceIds[] = $place->id; // Keep track of updated place IDs
+                    $existingPlaceIds[] = $place->id;
                 }
             } else {
-                // Add new place
+                // Create new place
                 $newPlace = $developer->place()->create(['place' => $placeData['place']]);
-                $existingPlaceIds[] = $newPlace->id; // Keep track of newly added place IDs
+                $existingPlaceIds[] = $newPlace->id;
             }
         }
     }
     $developer->place()->whereNotIn('id', $existingPlaceIds)->delete();
-///////////////////update sales_developer
+
+    // Update sales developers
+    $existingSalesIds = [];
     if ($request->has('sales_man')) {
-        foreach ($request->sales_man as $sales_man) {
-            $salesDeveloper = $developer->sales_developer()->find($sales_man['id']);
-            if ($salesDeveloper) {
-                $salesDeveloper->update([
-                    'sale_name' => $sales_man['name'],
-                    'sale_phone' => $sales_man['phone'],
-                ]);
+        foreach ($request->sales_man as $salesMan) {
+            if (isset($salesMan['id']) && $salesMan['id']) {
+                // Update existing sales developer
+                $salesDeveloper = $developer->sales_developer()->find($salesMan['id']);
+                if ($salesDeveloper) {
+                    $salesDeveloper->update([
+                        'sale_name' => $salesMan['name'],
+                        'sale_phone' => $salesMan['phone'],
+                    ]);
+                    $existingSalesIds[] = $salesDeveloper->id;
+                }
             } else {
-                $developer->sales_developer()->create([
-                    'sale_name' => $sales_man['name'],
-                    'sale_phone' => $sales_man['phone'],
+                // Create new sales developer
+                $newSales = $developer->sales_developer()->create([
+                    'sale_name' => $salesMan['name'],
+                    'sale_phone' => $salesMan['phone'],
                 ]);
+                $existingSalesIds[] = $newSales->id;
             }
         }
-
-}
-    return response()->json(['message' => 'Developer updated successfully']);
     }
+    $developer->sales_developer()->whereNotIn('id', $existingSalesIds)->delete();
+
+    return response()->json([
+        'message' => 'Developer updated successfully']);
+}
+
 
     public function deleteDeveloper($id){
         $developer = Developer::find($id);
