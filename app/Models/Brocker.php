@@ -14,7 +14,8 @@ class Brocker extends Model
         'plan_id',
         'profit',
         'number_of_deals',
-        'deals_done'
+        'deals_done',
+        'comission_percentage'
     ];
 
 

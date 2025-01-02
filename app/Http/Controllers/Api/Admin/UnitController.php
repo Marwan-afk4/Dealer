@@ -52,6 +52,8 @@ class UnitController extends Controller
         if ($validation->fails()) {
             return response()->json(['errors' => $validation->errors()], 422);
         }
+        $compound = Compound::find($compound_id);
+        $commission_percentage = $compound->commission_percentage;
         $uptown = Uptown::create([
             'compound_id' => $compound_id,
             'name' => $request->name,
@@ -60,6 +62,7 @@ class UnitController extends Controller
             'bathroom' => $request->bathroom,
             'bed' => $request->bed,
             'strat_price' => $request->strat_price,
+            'commission_price'=>$request->strat_price*($commission_percentage/100),
             'delivery_date' => $request->delivery_date,
             'sale_type' => $request->sale_type,
             'master_plan_image' => $request->master_plan_image,
@@ -76,7 +79,7 @@ class UnitController extends Controller
         }
         $this->updatecompoundUnit($compound_id);
 
-        return response()->json(['message' => 'Unit added successfully', 'uptown' => $uptown]);
+        return response()->json(['message' => 'Unit added successfully' ]);
 
     }
 

@@ -34,4 +34,6 @@ class BrokerController extends Controller
         }
         return response()->json(['message' => 'lead assigned successfully']);
     }
+
+    
 }

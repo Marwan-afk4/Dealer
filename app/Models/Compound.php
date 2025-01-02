@@ -13,6 +13,7 @@ class Compound extends Model
         'compound_name',
         'image',
         'units',
+        'commission_percentage'
     ];
 
     public function uptwons(){

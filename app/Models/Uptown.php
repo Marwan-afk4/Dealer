@@ -26,7 +26,8 @@ class Uptown extends Model
         'latitude',
         'longitude',
         'floor_plan_image',
-        'master_plan_image'
+        'master_plan_image',
+        'commission_price'
     ];
 
     public function developer(){
