@@ -79,11 +79,7 @@ public function getTrainingRequests()
 
     public function getComplaints(){
         $complaints = Complaint::with('user:id,first_name,last_name,email,phone')->get();
-        return response()->json($complaints->map(function ($complaint) {
-            return [
-                'complaint' => $complaint,
-            ];
-        }));
+        return response()->json(['complaints'=>$complaints]);
     }
 
 // lsa el ba2y leads and transactions

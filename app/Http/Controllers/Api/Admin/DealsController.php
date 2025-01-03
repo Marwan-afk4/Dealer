@@ -7,6 +7,7 @@ use App\Models\Brocker;
 use App\Models\BrokerLead;
 use App\Models\Compound;
 use App\Models\Developer;
+use App\Models\Lead;
 use App\Models\SalesDeveloper;
 use App\Models\TransactionDeal;
 use App\Models\Uptown;
@@ -20,7 +21,7 @@ class DealsController extends Controller
 
     public function getBrokerLeads($brokerId){
 
-        $leads = BrokerLead::where('brocker_id', $brokerId)->get();
+        $leads = Lead::where('brocker_id', $brokerId)->get();
         return response()->json(['leads'=>$leads]);
     }
 
@@ -74,9 +75,9 @@ class DealsController extends Controller
         return response()->json(['deals'=>$deals]);
     }
 
-    public function approveDeal($dealid , $brokerId , $developerId , $unitId , $leadbrokerId){
+    public function approveDeal($dealid , $brokerId , $developerId , $unitId , $leadid){
 
-        $lead = BrokerLead::findOrFail($leadbrokerId);
+        $lead = Lead::findOrFail($leadid);
         $deal = TransactionDeal::findOrFail($dealid);
         $unit = Uptown::findOrFail($unitId);
         $broker = Brocker::findOrFail($brokerId);

@@ -14,33 +14,38 @@ class BrokerController extends Controller
 
 
     public function addLeadtoBroker(Request $request, $id)
-    {
-        $broker = Brocker::find($id);
-        $validation = Validator::make($request->all(), [
-            'lead_id' => 'required|array',
-            'lead_id.*.lead_id' => 'required|exists:leads,id|unique:broker_leads,lead_id',
-            'lead_id.*.brocker_end_date' => 'required|date',
-        ]);
+{
+    $broker = Brocker::findOrFail($id);
 
-        if ($validation->fails()) {
-            return response()->json(['errors' => $validation->errors()], 422);
-        }
+    $validation = Validator::make($request->all(), [
+        'lead_id' => 'required|array',
+        'lead_id.*.lead_id' => 'required|exists:leads,id|unique:leads,brocker_id', // Ensures a lead is not already assigned to a broker
+        'lead_id.*.brocker_end_date' => 'required|date',
+    ]);
 
-        $leadsAdded = count($request->lead_id);
-
-        foreach ($request->lead_id as $lead_id) {
-            BrokerLead::create([
-                'brocker_id' => $broker->id,
-                'lead_id' => $lead_id['lead_id'],
-                'brocker_end_date' => $lead_id['brocker_end_date']
-            ]);
-            Lead::find($lead_id['lead_id'])->update(['status' => 'pending']);
-            $broker->number_of_deals += $leadsAdded;
-            $broker->save();
-
-        }
-        return response()->json(['message' => 'lead assigned successfully']);
+    if ($validation->fails()) {
+        return response()->json(['errors' => $validation->errors()], 422);
     }
+
+    // Count the number of leads being added
+    $leadsAdded = count($request->lead_id);
+
+    foreach ($request->lead_id as $leadData) {
+        // Update the lead directly in the leads table
+        Lead::findOrFail($leadData['lead_id'])->update([
+            'brocker_id' => $broker->id,
+            'brocker_end_date' => $leadData['brocker_end_date'],
+            'status' => 'pending',
+        ]);
+    }
+
+    // Update the broker's number of deals
+    $broker->number_of_deals += $leadsAdded;
+    $broker->save();
+
+    return response()->json(['message' => 'Leads assigned successfully']);
+}
+
 
 
 }

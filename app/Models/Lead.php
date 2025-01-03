@@ -11,6 +11,8 @@ class Lead extends Model
     protected $fillable = [
         'marketing_agency_id',
         'interested_place',
+        'brocker_id',
+        'brocker_end_date',
         'lead_name',
         'lead_phone',
         'brocker_start_date',
