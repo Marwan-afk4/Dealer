@@ -155,7 +155,9 @@ Route::middleware(['auth:sanctum', 'IsSuperAdmin'])->group(function () {
 
     Route::get('/admin/deals/Alldeals',[DealsController::class, 'getalldeals']);
 
-    Route::put('/admin/deals/accept-deal/{dealid}/{brokerId}/{developerId}/{unitId}',[DealsController::class, 'approveDeal']);
+    Route::put('/admin/deals/accept-deal/{dealid}/{brokerId}/{developerId}/{unitId},{leadbrokerId}',[DealsController::class, 'approveDeal']);
+
+    Route::get('/admin/deals/leadbrockers',[DealsController::class, 'getleadbrockers']);
 
     Route::put('/admin/deals/edit-period-days/{id}',[DealsController::class, 'editPeriodDays']);
 

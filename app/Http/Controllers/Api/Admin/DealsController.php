@@ -115,6 +115,10 @@ class DealsController extends Controller
         return response()->json(['message' => 'Deal Approved Successfully']);
 
     }
+    public function getleadbrockers(){
+        $leadbrockers = BrokerLead::all();
+        return response()->json(['leadbrockers'=>$leadbrockers]);
+    }
 
     public function editPeriodDays(Request $request, $id){
         $deal = TransactionDeal::findOrFail($id);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Brocker;
 use App\Models\Complaint;
 use App\Models\TrainingSubscription;
 use App\Models\User;
@@ -13,35 +14,62 @@ class RequestsController extends Controller
 {
 
 //training contract
-    public function getTrainingRequests(){
-        $training=TrainingSubscription::where('status','pending')->get();
-        $data=[
-            'training'=>$training
-        ];
-        return response()->json($data);
+public function getTrainingRequests()
+{
+    // Process expired training subscriptions
+    $expiredTrainings = TrainingSubscription::where('status', 'approved')->get();
+
+    foreach ($expiredTrainings as $training) {
+        $expirationDate = $training->created_at->addDays($training->training_period);
+
+        // Check if the training period has expired
+        if (now()->greaterThanOrEqualTo($expirationDate)) {
+            $user = User::findOrFail($training->user_id);
+
+            // Update the user's role to 'brocker'
+            $user->role = 'brocker';
+            $user->save();
+
+            // Create a new brocker record
+            Brocker::create([
+                'user_id' => $user->id,
+                'plan_id' => null, // Set default or null as appropriate
+                'profit' => 0,
+                'number_of_deals' => 0,
+                'deals_done' => 0,
+                'comission_percentage' => 0,
+            ]);
+
+
+            $training->status = 'completed';
+            $training->save();
+        }
     }
 
+
+    $training = TrainingSubscription::where('status', 'pending')->get();
+
+    $data = [
+        'training' => $training,
+    ];
+
+    return response()->json($data);
+}
+
+
     public function acceptTrainer(Request $request,$id){
-        $trainer = User::findOrFail($id);
+        $trainer = TrainingSubscription::findOrFail($id);
         $validarion = Validator::make($request->all(), [
             'training_period' => 'required|integer',
         ]);
-        TrainingSubscription::create([
-            'user_id' => $trainer->id,
-            'full_name' => $trainer->first_name . ' ' . $trainer->last_name,
-            'email' => $trainer->email,
-            'phone' => $trainer->phone,
-            'age' => $trainer->age,
-            'qualification' => $trainer->qualification,
-            'governate' => $trainer->governce,
-            'experience_year' => $trainer->experience_year,
-            'status' => 'accepted',
-        ]);
 
-        // Update the trainer's training_period in the users table if needed
-        $trainer->training_period = $request->training_period; // Ensure a training_period column exists in the users table
-        $trainer->save();                //lsa
+        if ($validarion->fails()) {
+            return response()->json(['errors' => $validarion->errors()], 422);
+        }
 
+        $trainer->training_period = $request->training_period;
+        $trainer->status = 'approved';
+        $trainer->save();
         return response()->json([
             'message' => 'Trainer accepted successfully, and subscription record created.',
         ]);
