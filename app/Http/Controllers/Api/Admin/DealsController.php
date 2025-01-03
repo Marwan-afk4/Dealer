@@ -7,6 +7,7 @@ use App\Models\Brocker;
 use App\Models\BrokerLead;
 use App\Models\Compound;
 use App\Models\Developer;
+use App\Models\SalesDeveloper;
 use App\Models\TransactionDeal;
 use App\Models\Uptown;
 use Illuminate\Http\Request;
@@ -14,6 +15,8 @@ use Illuminate\Support\Facades\Validator;
 
 class DealsController extends Controller
 {
+
+    protected $updatePeriodDays=['days_for_profits'];
 
     public function getBrokerLeads($brokerId){
 
@@ -33,9 +36,20 @@ class DealsController extends Controller
             'deal_value' => 'required',
             'image' => 'required',
         ]);
-        if($Validation->fails()){
-            return response()->json(['errors'=>$Validation->errors()], 401);
+
+        if ($Validation->fails()) {
+            return response()->json(['errors' => $Validation->errors()], 401);
         }
+
+        // Check if the selected sales_developer belongs to the developer
+        $salesDeveloperBelongs = SalesDeveloper::where('id', $request->sales_developer_id)
+            ->where('developer_id', $request->developer_id)
+            ->exists();
+
+        if (!$salesDeveloperBelongs) {
+            return response()->json(['errors' => ['sales_developer_id' => 'The selected sales developer does not belong to the specified developer.']], 422);
+        }
+
         $deal = TransactionDeal::create([
             'lead_id' => $request->lead_id,
             'developer_id' => $request->developer_id,
@@ -49,8 +63,11 @@ class DealsController extends Controller
             'status' => 'pending'
         ]);
 
-        return response()->json(['message'=>'Deal Added Successfully']);
+        return response()->json(['message' => 'Deal Added Successfully']);
     }
+
+
+
 
     public function getalldeals(){
         $deals = TransactionDeal::all();
@@ -81,7 +98,7 @@ class DealsController extends Controller
         }
 
         $developer->deals_done += 1;
-        $developer->profit = $totalProfit;
+        $developer->total_profit = $totalProfit;
         $developer->save();
 
         // Update Uptown's Status
@@ -92,5 +109,27 @@ class DealsController extends Controller
 
     }
 
+    public function editPeriodDays(Request $request, $id){
+        $deal = TransactionDeal::findOrFail($id);
+        $validation = Validator::make($request->all(), [
+            'days_for_profits' => 'required|integer',
+        ]);
+
+        if ($validation->fails()) {
+            return response()->json(['errors' => $validation->errors()], 422);
+        }
+
+        $deal->update($request->only($this->updatePeriodDays));
+        return response()->json(['message'=>'Period Days Updated Successfully']);
+
+    }
+
+    public function rejectdeal($id){
+        $deal = TransactionDeal::findOrFail($id);
+        $deal->status = 'rejected';
+        $deal->save();
+        return response()->json(['message'=>'Deal Rejected Successfully']);
+    }
+
 }
-//lsa y5lih y7ot 60 yom aw aktr
+

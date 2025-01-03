@@ -147,7 +147,18 @@ Route::middleware(['auth:sanctum', 'IsSuperAdmin'])->group(function () {
 
     Route::post('/admin/broker/add-leads/{id}',[BrokerController::class, 'addLeadtoBroker']);
 
+///////////////////////////////////////////////// Deals /////////////////////////////////////////////////////////////////
+
     Route::get('/admin/broker/leads/{id}',[DealsController::class, 'getBrokerLeads']);
 
+    Route::post('/admin/deals/make-deal',[DealsController::class, 'makeDeal']);
+
+    Route::get('/admin/deals/Alldeals',[DealsController::class, 'getalldeals']);
+
+    Route::put('/admin/deals/accept-deal/{dealid}/{brokerId}/{developerId}/{unitId}',[DealsController::class, 'approveDeal']);
+
+    Route::put('/admin/deals/edit-period-days/{id}',[DealsController::class, 'editPeriodDays']);
+
+    Route::put('/admin/deals/reject-deal/{id}',[DealsController::class, 'rejectdeal']);
 
 });
