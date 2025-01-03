@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Compound;
 use App\Models\Developer;
-use App\Models\DeveloperSalesman;
 use App\Models\Place;
 use App\Models\SalesDeveloper;
 use App\Models\Uptown;
@@ -26,10 +25,20 @@ class DeveloperControlelr extends Controller
         $developer = Developer::with('place','sales_developer')->findOrFail($id);
 
         $developerCompounds=Compound::where('developer_id',$id)->get();
+        $units = Uptown::whereIn('compound_id', $developerCompounds->pluck('id'))
+        ->where('status', 'unsold')
+        ->count();
+
+        $sales_deevlopers = SalesDeveloper::where('developer_id', $id)->get();
+
+        $developer->units = $units;
+        $developer->save();
 
         return response()->json([
             'developer'=>$developer,
-            'developerCompounds'=>$developerCompounds
+            'developerCompounds'=>$developerCompounds,
+            'sales_deevlopers'=>$sales_deevlopers,
+            'developer_units'=>$units
         ]);
 
         // $developer = Developer::with('place')->findOrFail($id);

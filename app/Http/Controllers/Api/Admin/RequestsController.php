@@ -7,6 +7,7 @@ use App\Models\Complaint;
 use App\Models\TrainingSubscription;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class RequestsController extends Controller
 {
@@ -20,14 +21,30 @@ class RequestsController extends Controller
         return response()->json($data);
     }
 
-    public function acceptTrainer($id){
-        $training=TrainingSubscription::find($id);
-        $user=User::find($training->user_id);
-        $user->role ='trainer';
-        $training->status = 'approved';
-        $user->save();
-        $training->save();
-        return response()->json(['message' => 'Trainer accepted successfully']);
+    public function acceptTrainer(Request $request,$id){
+        $trainer = User::findOrFail($id);
+        $validarion = Validator::make($request->all(), [
+            'training_period' => 'required|integer',
+        ]);
+        TrainingSubscription::create([
+            'user_id' => $trainer->id,
+            'full_name' => $trainer->first_name . ' ' . $trainer->last_name,
+            'email' => $trainer->email,
+            'phone' => $trainer->phone,
+            'age' => $trainer->age,
+            'qualification' => $trainer->qualification,
+            'governate' => $trainer->governce,
+            'experience_year' => $trainer->experience_year,
+            'status' => 'accepted',
+        ]);
+
+        // Update the trainer's training_period in the users table if needed
+        $trainer->training_period = $request->training_period; // Ensure a training_period column exists in the users table
+        $trainer->save();                //lsa
+
+        return response()->json([
+            'message' => 'Trainer accepted successfully, and subscription record created.',
+        ]);
     }
 
 //complaint

@@ -19,5 +19,11 @@ class TrainingSubscription extends Model
         'governate',
         'experience_year',
         'status',
+        'training_period'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -74,8 +74,9 @@ class DealsController extends Controller
         return response()->json(['deals'=>$deals]);
     }
 
-    public function approveDeal($dealid, $brokerId, $developerId, $unitId){
+    public function approveDeal($dealid , $brokerId , $developerId , $unitId , $leadbrokerId){
 
+        $lead = BrokerLead::findOrFail($leadbrokerId);
         $deal = TransactionDeal::findOrFail($dealid);
         $unit = Uptown::findOrFail($unitId);
         $broker = Brocker::findOrFail($brokerId);
@@ -96,6 +97,12 @@ class DealsController extends Controller
                 $totalProfit += $unit->commission_price;
             }
         }
+
+        $lead->status = 'done';
+        $lead->save();
+
+        $unit->status = 'sold';
+        $unit->save();
 
         $developer->deals_done += 1;
         $developer->total_profit = $totalProfit;

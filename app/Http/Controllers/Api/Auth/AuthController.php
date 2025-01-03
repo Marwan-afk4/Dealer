@@ -16,6 +16,7 @@ class AuthController extends Controller
             'last_name' => 'required',
             'email' => 'required|email|unique:users',
             'phone'=> 'required|unique:users',
+            'age' => 'nullable|integer',
             'password' => 'required|min:6',
             'qualification' => 'nullable',
             'experience_year' => 'nullable|integer',
@@ -32,7 +33,8 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'qualification' => $request->qualification,
             'experience_year' => $request->experience_year,
-            'role' => 'user'
+            'role' => 'user',
+            'age' => $request->age
         ]);
         $token = $user->createToken('auth_token')->plainTextToken;
         return response()->json([

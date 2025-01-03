@@ -23,7 +23,8 @@ class User extends Model
         'role',
         'qualification',
         'experience_year',
-        'governce'
+        'governce',
+        'age'
     ];
 
     protected $hidden = [
@@ -41,5 +42,9 @@ class User extends Model
 
     public function payments(){
         return $this->hasMany(Payment::class);
+    }
+
+    public function trainings(){
+        return $this->hasMany(TrainingSubscription::class);
     }
 }
