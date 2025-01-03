@@ -17,7 +17,7 @@ class DeveloperControlelr extends Controller
 
 
     public function AllDevelopers(){
-        $developer =Developer::all();
+        $developer =Developer::with('sales_developer')->get();
         return response()->json(['developers'=>$developer]);
     }
 
