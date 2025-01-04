@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Compound;
 use App\Models\Developer;
+use App\Models\Uptown;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -13,12 +14,27 @@ class CompundController extends Controller
 
 
     public function compounds(){
+        // Get all compounds
         $compounds = Compound::all();
+
+        // Add the count of unsold units for each compound
+        foreach ($compounds as $compound) {
+            // Get the count of unsold units for the current compound
+            $unsoldUnitsCount = Uptown::where('compound_id', $compound->id)
+            ->where('status', 'unsold')
+            ->count();
+
+            $compound->unsold_units_count = $unsoldUnitsCount;
+        }
+
+        // Prepare the data to return
         $data = [
             'compounds' => $compounds
         ];
+
         return response()->json($data);
     }
+
 
     public function getdevelopers(){
         $developers = Developer::all();
