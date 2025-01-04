@@ -28,7 +28,7 @@ Route::post('/login',[AuthController::class, 'login']);
 
 
 
-Route::middleware(['auth:sanctum', 'IsSuperAdmin'])->group(function () {
+Route::middleware(['auth:sanctum', 'IsSuperAdmin',])->group(function () {
 
     Route::get('/admin/homepage',[HomepageController::class, 'homepage']);
 
