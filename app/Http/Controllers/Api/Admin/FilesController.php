@@ -19,6 +19,7 @@ class FilesController extends Controller
     public function addFile(Request $request){
         $validation = Validator::make($request->all(), [
             'file'=>'required|mimes:pdf',
+            'name'=>'required',
         ]);
         if($validation->fails()){
             return response()->json(['error'=>$validation->errors()],401);
@@ -26,7 +27,7 @@ class FilesController extends Controller
 
         if($request->file('file')->isValid()){
             $file = $request->file('file');
-            $file_name = time().$file->getClientOriginalName();
+            $file_name = $request->name.'.'.$file->getClientOriginalExtension();
             $filepath = $file->storeAs('files', $file_name);
 
             $fileModel = new File();
