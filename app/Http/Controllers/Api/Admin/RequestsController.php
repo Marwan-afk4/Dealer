@@ -16,51 +16,32 @@ class RequestsController extends Controller
 //training contract
 public function getTrainingRequests()
 {
-    // Process expired training subscriptions
     $expiredTrainings = TrainingSubscription::where('status', 'approved')->get();
 
     foreach ($expiredTrainings as $training) {
-        $expirationDate = $training->created_at->addDays($training->training_period);
+        $expirationDate = $training->updated_at->addDays($training->training_period)->startOfDay();
 
-        // Check if the training period has expired
-        if (now()->greaterThanOrEqualTo($expirationDate)) {
-            $user = User::findOrFail($training->user_id);
-
-            // Update the user's role to 'brocker'
-            $user->role = 'brocker';
-            $user->save();
-
-            // Create a new brocker record
-            Brocker::create([
-                'user_id' => $user->id,
-                'plan_id' => null, // Set default or null as appropriate
-                'profit' => 0,
-                'number_of_deals' => 0,
-                'deals_done' => 0,
-                'comission_percentage' => 0,
-            ]);
-
-
+        // Check if the training period has expired by comparing only the date part
+        if (now()->startOfDay()->greaterThanOrEqualTo($expirationDate)) {
             $training->status = 'completed';
             $training->save();
         }
     }
 
+    $pendingTrainings = TrainingSubscription::where('status', 'pending')->get();
 
-    $training = TrainingSubscription::where('status', 'pending')->get();
-
-    $data = [
-        'training' => $training,
-    ];
-
-    return response()->json($data);
+    return response()->json([
+        'pending_trainings' => $pendingTrainings,
+    ]);
 }
+
+
 
 
     public function acceptTrainer(Request $request,$id){
         $trainer = TrainingSubscription::findOrFail($id);
         $validarion = Validator::make($request->all(), [
-            'training_period' => 'required|integer',
+            'training_period' => 'nullable|integer',
         ]);
 
         if ($validarion->fails()) {
@@ -71,7 +52,7 @@ public function getTrainingRequests()
         $trainer->status = 'approved';
         $trainer->save();
         return response()->json([
-            'message' => 'Trainer accepted successfully, and subscription record created.',
+            'message' => 'Trainer accepted successfully',
         ]);
     }
 
