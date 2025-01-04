@@ -85,6 +85,6 @@ class PaymentsController extends Controller
                 'status'=>$payment->status,
             ];
         });
-        return response()->json($data);
+        return response()->json(['history'=>$data]);
     }
 }

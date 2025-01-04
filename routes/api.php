@@ -3,8 +3,10 @@
 use App\Http\Controllers\Api\Admin\AdsController;
 use App\Http\Controllers\Api\Admin\BrokerController;
 use App\Http\Controllers\Api\Admin\CompundController;
+use App\Http\Controllers\Api\Admin\ContractController;
 use App\Http\Controllers\Api\Admin\DealsController;
 use App\Http\Controllers\Api\Admin\DeveloperControlelr;
+use App\Http\Controllers\Api\Admin\FilesController;
 use App\Http\Controllers\Api\Admin\HomepageController;
 use App\Http\Controllers\Api\Admin\LeadController;
 use App\Http\Controllers\Api\Admin\MarketingAgencyController;
@@ -164,5 +166,21 @@ Route::middleware(['auth:sanctum', 'IsSuperAdmin'])->group(function () {
     Route::put('/admin/deals/edit-period-days/{id}',[DealsController::class, 'editPeriodDays']);
 
     Route::put('/admin/deals/reject-deal/{id}',[DealsController::class, 'rejectdeal']);
+
+///////////////////////////////////////////// Files /////////////////////////////////////////////////////////////////
+
+    Route::get('/admin/files',[FilesController::class, 'getallFiles']);
+
+    Route::post('/admin/file/upload',[FilesController::class, 'addFile']);
+
+    Route::delete('/admin/file/delete/{id}',[FilesController::class, 'deleteFile']);
+
+////////////////////////////////////////////// Contracts /////////////////////////////////////////////////////////////
+
+    Route::get('/admin/contracts',[ContractController::class, 'getContracts']);
+
+    Route::post('/admin/contract/add',[ContractController::class, 'createContract']);
+
+    Route::delete('/admin/contract/delete/{id}',[ContractController::class, 'deleteContract']);
 
 });
