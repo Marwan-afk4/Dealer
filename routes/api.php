@@ -131,6 +131,8 @@ Route::middleware(['auth:sanctum', 'IsSuperAdmin'])->group(function () {
 
     Route::get('/admin/payments/pending-payments',[PaymentsController::class, 'getPendingPayments']);
 
+    Route::get('/admin/payments/history-payments',[PaymentsController::class, 'historyPayment']);
+
     Route::put('/admin/payments/approve-payment/{payment_id}',[PaymentsController::class, 'approvePayment']);
 
 /////////////////////////////////////////////////// Leads //////////////////////////////////////////////////////////////////
