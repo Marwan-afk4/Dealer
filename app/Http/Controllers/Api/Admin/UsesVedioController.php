@@ -41,7 +41,7 @@ class UsesVedioController extends Controller
             $videoModel->name = $request->name;
             $videoModel->title = $request->title;
             $videoModel->description = $request->description;
-            $videoModel->vedio_path = 'storage/' . $vedio_path;
+            $videoModel->vedio_path = asset('storage/' . $vedio_path);
             $videoModel->save();
 
             return response()->json([
