@@ -16,39 +16,41 @@ class FilesController extends Controller
         return response()->json(['files'=>$files]);
     }
 
-    public function addFile(Request $request){
-        $validation = Validator::make($request->all(), [
-            'file'=>'required|mimes:pdf',
-            'name'=>'required',
-        ]);
-        if($validation->fails()){
-            return response()->json(['error'=>$validation->errors()],401);
-        }
+    public function addFile(Request $request)
+{
+    $validation = Validator::make($request->all(), [
+        'file' => 'required|mimes:pdf',
+        'name' => 'required',
+    ]);
 
-        if($request->file('file')->isValid()){
-            $file = $request->file('file');
-            $file_name = $request->name.'.'.$file->getClientOriginalExtension();
-            $filepath = $file->storeAs('files', $file_name);
-
-            $fileModel = new File();
-            $fileModel->name = $file_name;
-            $fileModel->path = $filepath;
-            $fileModel->save();
-            return response()->json([
-                'success'=>true,
-                'message'=>'File Added Successfully',
-                'data' =>[
-                    'id'=>$fileModel->id,
-                    'name'=>$fileModel->name,
-                    'path'=>Storage::url($fileModel->path),
-                ]
-            ]
-            ,200);
-        }
-        else{
-            return response()->json(['success' => false, 'message' => 'File upload failed.'], 500);
-        }
+    if ($validation->fails()) {
+        return response()->json(['error' => $validation->errors()], 401);
     }
+
+    if ($request->file('file')->isValid()) {
+        $file = $request->file('file');
+        $file_name = $request->name . '.' . $file->getClientOriginalExtension();
+        $filepath = $file->storeAs('files', $file_name, 'public'); // Add 'public' to ensure it's stored in public-accessible disk
+
+        $fileModel = new File();
+        $fileModel->name = $file_name;
+        $fileModel->path = $filepath;
+        $fileModel->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'File Added Successfully',
+            'data' => [
+                'id' => $fileModel->id,
+                'name' => $fileModel->name,
+                'url' => asset('storage/' . $filepath), 
+            ]
+        ], 200);
+    } else {
+        return response()->json(['success' => false, 'message' => 'File upload failed.'], 500);
+    }
+}
+
 
     public function deleteFile($id){
         $file = File::find($id);
