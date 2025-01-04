@@ -53,7 +53,7 @@ class UsesVedioController extends Controller
                     'description' => $videoModel->description,
                     'video_url' => asset('storage/' . $vedio_path),
                 ]
-            ], 201);
+            ], 200);
         } else {
             return response()->json(['success' => false, 'message' => 'Video upload failed.'], 500);
         }
