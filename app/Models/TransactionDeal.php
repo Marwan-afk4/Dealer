@@ -18,7 +18,8 @@ class TransactionDeal extends Model
         'image',
         'status',
         'lead_id',
-        'days_for_profits'
+        'days_for_profits',
+        'compound_id'
     ];
 
     public function sales_developer(){
@@ -31,5 +32,17 @@ class TransactionDeal extends Model
 
     public function brocker(){
         return $this->belongsTo(Brocker::class);
+    }
+
+    public function developer(){
+        return $this->belongsTo(Developer::class);
+    }
+
+    public function lead(){
+        return $this->belongsTo(Lead::class);
+    }
+
+    public function compound(){
+        return $this->belongsTo(Compound::class);
     }
 }

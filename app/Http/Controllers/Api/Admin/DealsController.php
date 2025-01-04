@@ -42,7 +42,6 @@ class DealsController extends Controller
             return response()->json(['errors' => $Validation->errors()], 401);
         }
 
-        // Check if the selected sales_developer belongs to the developer
         $salesDeveloperBelongs = SalesDeveloper::where('id', $request->sales_developer_id)
             ->where('developer_id', $request->developer_id)
             ->exists();
@@ -71,22 +70,31 @@ class DealsController extends Controller
 
 
     public function getalldeals(){
-        $deals = TransactionDeal::all();
+        $deals = TransactionDeal::with('lead', 'developer','brocker', 'uptown' ,'lead','compound')->get();
+
         return response()->json(['deals'=>$deals]);
     }
 
-    public function approveDeal($dealid , $brokerId , $developerId , $unitId , $leadid){
+
+    public function approveDeal($dealid , $brokerId , $developerId , $unitId , $leadid ,$compoundid){
 
         $lead = Lead::findOrFail($leadid);
         $deal = TransactionDeal::findOrFail($dealid);
         $unit = Uptown::findOrFail($unitId);
         $broker = Brocker::findOrFail($brokerId);
         $developer = Developer::findOrFail($developerId);
+        $compound = Compound::findOrFail($compoundid);
+
+        $unit->status = 'sold';
+        $unit->commission_price = $deal->deal_value * $compound->commission_percentage / 100;
+        $unit->save();
+
 
         // Update Broker's Deals Done and Profit
         $broker->deals_done += 1;
         $broker->profit += ($broker->comission_percentage * $unit->commission_price / 100);
         $broker->save();
+
 
         // Calculate Developer's Total Profit
         $compounds = Compound::where('developer_id', $developerId)->get();
@@ -102,8 +110,6 @@ class DealsController extends Controller
         $lead->status = 'done';
         $lead->save();
 
-        $unit->status = 'sold';
-        $unit->save();
 
         $developer->deals_done += 1;
         $developer->total_profit = $totalProfit;
@@ -116,6 +122,7 @@ class DealsController extends Controller
         return response()->json(['message' => 'Deal Approved Successfully']);
 
     }
+
     public function getleadbrockers(){
         $leadbrockers = BrokerLead::all();
         return response()->json(['leadbrockers'=>$leadbrockers]);

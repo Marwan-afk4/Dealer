@@ -53,4 +53,8 @@ class Uptown extends Model
     public function leads(){
         return $this->hasMany(Lead::class);
     }
+
+    public function transaction_deals(){
+        return $this->hasMany(TransactionDeal::class);
+    }
 }

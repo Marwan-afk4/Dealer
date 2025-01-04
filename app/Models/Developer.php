@@ -36,5 +36,9 @@ class Developer extends Model
         return $this->hasMany(SalesDeveloper::class);
     }
 
+    public function transaction_deals(){
+        return $this->hasMany(TransactionDeal::class);
+    }
+
 
 }

@@ -19,4 +19,8 @@ class Compound extends Model
     public function uptwons(){
         return $this->hasMany(Uptown::class);
     }
+
+    public function transaction_deals(){
+        return $this->hasMany(TransactionDeal::class);
+    }
 }

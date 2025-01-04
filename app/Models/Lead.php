@@ -33,4 +33,8 @@ class Lead extends Model
     public function marketing_agency(){
         return $this->belongsTo(MarketingAgency::class);
     }
+
+    public function transaction_deals(){
+        return $this->hasMany(TransactionDeal::class);
+    }
 }
