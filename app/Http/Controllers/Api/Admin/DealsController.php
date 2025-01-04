@@ -70,7 +70,7 @@ class DealsController extends Controller
 
 
     public function getalldeals(){
-        $deals = TransactionDeal::with('lead', 'developer','brocker', 'uptown' ,'lead','compound')->get();
+        $deals = TransactionDeal::with('compound')->get();
 
         return response()->json(['deals'=>$deals]);
     }
