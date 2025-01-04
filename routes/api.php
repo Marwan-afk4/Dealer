@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\Admin\RequestsController;
 use App\Http\Controllers\Api\Admin\SubscriptionController;
 use App\Http\Controllers\Api\Admin\UnitController;
 use App\Http\Controllers\Api\Admin\UserController;
+use App\Http\Controllers\Api\Admin\UsesVedioController;
 use App\Http\Controllers\Api\Auth\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -188,5 +189,13 @@ Route::middleware(['auth:sanctum', 'IsSuperAdmin'])->group(function () {
     Route::delete('/admin/contract/delete/{id}',[ContractController::class, 'deleteContract']);
 
     Route::put('/admin/contract/approve/{id}/{user_id}',[ContractController::class, 'approveContract']);
+
+////////////////////////////////////////////// How to use Vedios /////////////////////////////////////////////////////
+
+    Route::get('/admin/how-to-use-vedios',[UsesVedioController::class, 'getVedios']);
+
+    Route::post('/admin/how-to-use-vedio/upload',[UsesVedioController::class, 'uploadVideo']);
+
+    Route::delete('/admin/how-to-use-vedio/delete/{id}',[UsesVedioController::class, 'deleteVideo']);
 
 });

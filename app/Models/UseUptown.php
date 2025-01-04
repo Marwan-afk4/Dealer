@@ -10,6 +10,7 @@ class UseUptown extends Model
     protected $fillable = [
         'title',
         'description',
-        'vedio_path'
+        'vedio_path',
+        'name'
     ];
 }
