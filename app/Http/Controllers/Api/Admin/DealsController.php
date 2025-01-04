@@ -75,6 +75,15 @@ class DealsController extends Controller
         return response()->json(['deals'=>$deals]);
     }
 
+    public function semidonedeal($id){
+
+        $deals = TransactionDeal::findOrFail($id);
+        $deals->status = 'semidone';
+        $deals->save();
+
+        return response()->json(['message' => 'Deal Updated Successfully']);
+    }
+
 
     public function approveDeal($dealid , $brokerId , $developerId , $unitId , $leadid ,$compoundid){
 

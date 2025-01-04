@@ -10,6 +10,7 @@ class Complaint extends Model
     protected $fillable = [
         'user_id',
         'message',
+        'status'
     ];
 
     public function user(){

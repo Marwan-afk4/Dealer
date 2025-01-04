@@ -59,8 +59,17 @@ public function getTrainingRequests()
 //complaint
 
     public function getComplaints(){
-        $complaints = Complaint::with('user:id,first_name,last_name,email,phone')->get();
+        $complaints = Complaint::with('user:id,first_name,last_name,email,phone')
+        ->where('status','open')
+        ->get();
         return response()->json(['complaints'=>$complaints]);
+    }
+
+    public function closeComplaint($id){
+        $complaint = Complaint::findOrFail($id);
+        $complaint->status = 'closed';
+        $complaint->save();
+        return response()->json(['message'=>'Complaint Closed Successfully']);
     }
 
 // lsa el ba2y leads and transactions

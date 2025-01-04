@@ -87,6 +87,8 @@ Route::middleware(['auth:sanctum', 'IsSuperAdmin'])->group(function () {
 
     Route::get('/admin/requests/complaints',[RequestsController::class, 'getComplaints']);
 
+    Route::delete('/admin/complaint/close/{id}',[RequestsController::class, 'closeComplaint']);
+
 /////////////////////////////////////////// Marketing Agency //////////////////////////////////////////////
 
     Route::get('/admin/marketing-agency',[MarketingAgencyController::class, 'getMarketingAgency']);
@@ -158,6 +160,8 @@ Route::middleware(['auth:sanctum', 'IsSuperAdmin'])->group(function () {
     Route::post('/admin/deals/make-deal',[DealsController::class, 'makeDeal']);
 
     Route::get('/admin/deals/Alldeals',[DealsController::class, 'getalldeals']);
+
+    Route::put('/admin/deals/semidone-deal/{id}',[DealsController::class, 'semidonedeal']);
 
     Route::put('/admin/deals/accept-deal/{dealid}/{brokerId}/{developerId}/{unitId}/{leadid}/{compoundid}',[DealsController::class, 'approveDeal']);
 
