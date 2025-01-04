@@ -11,9 +11,19 @@ class MarketingAgencyController extends Controller
 {
 
     public function getMarketingAgency(){
-        $agency=MarketingAgency::all();
-        return response()->json(['Marketing_Agency'=>$agency]);
+
+        $agencies = MarketingAgency::with('leads')->get();
+
+        foreach ($agencies as $agency) {
+            $actualLeadCount = count($agency->leads);
+            $agency->total_leads = $actualLeadCount;
+            $agency->save();
+        }
+
+        return response()->json(['Marketing_Agency' => $agencies]);
     }
+
+
 
     public function addMarketagency(Request $request){
         $validation = Validator::make($request->all(), [
