@@ -183,4 +183,6 @@ Route::middleware(['auth:sanctum', 'IsSuperAdmin'])->group(function () {
 
     Route::delete('/admin/contract/delete/{id}',[ContractController::class, 'deleteContract']);
 
+    Route::put('/admin/contract/approve/{id}/{user_id}',[ContractController::class, 'approveContract']);
+
 });

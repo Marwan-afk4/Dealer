@@ -10,6 +10,15 @@ class Contract extends Model
         'contract_name',
         'user_id',
         'file_id',
-        'whatsapp_number'
+        'whatsapp_number',
+        'status',
     ];
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
+    public function file(){
+        return $this->belongsTo(File::class);
+    }
 }

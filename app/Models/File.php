@@ -10,4 +10,8 @@ class File extends Model
         'path',
         'name'
     ];
+
+    public function contracts(){
+        return $this->hasMany(Contract::class);
+    }
 }

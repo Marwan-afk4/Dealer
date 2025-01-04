@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Brocker;
 use App\Models\Contract;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -11,7 +13,7 @@ class ContractController extends Controller
 {
 
     public function getContracts(){
-        $contracts = Contract::all();
+        $contracts = Contract::with('user')->get();
         return response()->json(['contracts'=>$contracts]);
     }
 
@@ -39,5 +41,28 @@ class ContractController extends Controller
         $contract = Contract::find($id);
         $contract->delete();
         return response()->json(['message'=>'Contract deleted successfully']);
+    }
+
+    public function approveContract($id,$user_id){
+        $contract = Contract::findOrFail($id);
+        $user = User::findOrFail($user_id);
+
+        $contract->update([
+            'status' => 'accepted',
+        ]);
+
+        $user->update([
+            'role' => 'brocker',
+        ]);
+
+        $brocker = Brocker::create([
+            'user_id' => $user_id,
+            'plan_id' =>$user->plan_id,
+            'profit' => 0,
+            'number_of_deals'=>0,
+            'deals_done'=>0,
+        ]);
+
+        return response()->json(['message'=>'Contract approved successfully']);
     }
 }

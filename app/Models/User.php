@@ -24,7 +24,8 @@ class User extends Model
         'qualification',
         'experience_year',
         'governce',
-        'age'
+        'age',
+        'plan_id'
     ];
 
     protected $hidden = [
@@ -46,5 +47,9 @@ class User extends Model
 
     public function trainings(){
         return $this->hasMany(TrainingSubscription::class);
+    }
+
+    public function contracts(){
+        return $this->hasMany(Contract::class);
     }
 }
