@@ -34,7 +34,7 @@ class FilesController extends Controller
 
         $fileModel = new File();
         $fileModel->name = $file_name;
-        $fileModel->path = $filepath;
+        $fileModel->path = asset('storage/' . $filepath);
         $fileModel->save();
 
         return response()->json([
@@ -43,7 +43,7 @@ class FilesController extends Controller
             'data' => [
                 'id' => $fileModel->id,
                 'name' => $fileModel->name,
-                'url' => asset('storage/' . $filepath), 
+                'url' => asset('storage/' . $filepath),
             ]
         ], 200);
     } else {
