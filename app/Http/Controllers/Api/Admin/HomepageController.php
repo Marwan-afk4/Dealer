@@ -30,6 +30,17 @@ class HomepageController extends Controller
             $endDate = Carbon::now()->endOfYear();
         }
 
+        $totalRevenue = TransactionDeal::all()
+        ->sum(function ($deal) {
+            $unitCommissionPrice = $deal->uptown->commission_price ?? 0; // Ensure unit exists
+            $brockerProfit = $deal->brocker->profit ?? 0; // Ensure brocker exists
+            return $unitCommissionPrice - $brockerProfit;
+        });
+
+
+
+
+
         $totalUsers = User::whereBetween('created_at', [$startDate, $endDate])->count();
 
         $users = User::where('role', 'user')
@@ -90,8 +101,8 @@ class HomepageController extends Controller
                 'user' => $users,
                 'brocker' => $brockers,
                 'trainer' => $trainers,
-        ],
-
+            ],
+            'total_revenue' => $totalRevenue
         ]);
     }
 }
