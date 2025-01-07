@@ -12,6 +12,15 @@ class SubscriptionController extends Controller
 
 
     public function getSubscribers(){
+
+        $subscriberss = Subscribtion::with('brocker')
+        ->whereDate('end_date', '<', now())
+        ->get();
+
+        Subscribtion::whereDate('end_date', '<', now())->delete();
+
+
+
         $subscribers = Subscribtion::with('brocker')
         ->get();
         $data = $subscribers->map(function ($subscriber) {

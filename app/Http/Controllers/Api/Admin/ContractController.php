@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Brocker;
 use App\Models\Contract;
+use App\Models\Subscribtion;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -61,6 +62,14 @@ class ContractController extends Controller
             'profit' => 0,
             'number_of_deals'=>0,
             'deals_done'=>0,
+        ]);
+
+        $periodOfDays = $user->plan->period_in_days;
+
+        $subscribion = Subscribtion::create([
+            'brocker_id' => $brocker->id,
+            'start_date' => now(),
+            'end_date' =>now()->addDays($periodOfDays),
         ]);
 
         return response()->json(['message'=>'Contract approved successfully']);

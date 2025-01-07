@@ -9,7 +9,7 @@ class Subscribtion extends Model
 
 
     protected $fillable = [
-        'broker_id',
+        'brocker_id',
         'start_date',
         'end_date',
     ];

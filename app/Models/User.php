@@ -52,4 +52,8 @@ class User extends Model
     public function contracts(){
         return $this->hasMany(Contract::class);
     }
+
+    public function plan(){
+        return $this->belongsTo(Plan::class);
+    }
 }

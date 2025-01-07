@@ -19,7 +19,8 @@ use App\Http\Controllers\Api\Admin\UnitController;
 use App\Http\Controllers\Api\Admin\UserController;
 use App\Http\Controllers\Api\Admin\UsesVedioController;
 use App\Http\Controllers\Api\Auth\AuthController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\User\DeveloperController as UserDeveloperController;
+use App\Http\Controllers\Api\User\HomePageController as UserHomePageController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -199,3 +200,21 @@ Route::middleware(['auth:sanctum', 'IsSuperAdmin',])->group(function () {
     Route::delete('/admin/how-to-use-vedio/delete/{id}',[UsesVedioController::class, 'deleteVideo']);
 
 });
+
+
+
+
+
+
+
+    Route::middleware(['auth:sanctum', 'IsUser'])->group(function () {
+
+        Route::get('/user/homepage',[UserHomePageController::class, 'homepage']);
+
+//////////////////////////////////////////////// Developer /////////////////////////////////////////////////////////
+
+        Route::get('/user/developers',[UserDeveloperController::class, 'GetDevloper']);
+
+        Route::get('/user/compounds/{developer_id}',[UserDeveloperController::class, 'getCompounds']);
+
+    });
