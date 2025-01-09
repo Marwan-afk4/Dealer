@@ -21,6 +21,8 @@ use App\Http\Controllers\Api\Admin\UsesVedioController;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\User\DeveloperController as UserDeveloperController;
 use App\Http\Controllers\Api\User\HomePageController as UserHomePageController;
+use App\Http\Controllers\Api\User\PyamentMethodsController;
+use App\Http\Controllers\Api\User\SendContractController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -207,14 +209,26 @@ Route::middleware(['auth:sanctum', 'IsSuperAdmin',])->group(function () {
 
 
 
-    Route::middleware(['auth:sanctum', 'IsUser'])->group(function () {
+Route::middleware(['auth:sanctum', 'IsUser'])->group(function () {
 
         Route::get('/user/homepage',[UserHomePageController::class, 'homepage']);
 
+        Route::delete('/user/logout',[AuthController::class, 'logout']);
+
+        Route::get('/user/profile',[UserHomePageController::class, 'profile']);
+
 //////////////////////////////////////////////// Developer /////////////////////////////////////////////////////////
 
-        Route::get('/user/developers',[UserDeveloperController::class, 'GetDevloper']);
+    Route::get('/user/developers',[UserDeveloperController::class, 'GetDevloper']);
 
-        Route::get('/user/compounds/{developer_id}',[UserDeveloperController::class, 'getCompounds']);
+    Route::get('/user/compounds/{developer_id}',[UserDeveloperController::class, 'getCompounds']);
+
+/////////////////////////////////////////////// Plans PyamentMehtods /////////////////////////////////////////////////////
+
+    Route::get('/user/plans-payment-method',[PyamentMethodsController::class, 'PlansPaymentMethod']);
+
+///////////////////////////////////////////////// Contracts /////////////////////////////////////////////////////////
+
+    Route::post('/user/send-contract',[SendContractController::class, 'sendContract']);
 
     });

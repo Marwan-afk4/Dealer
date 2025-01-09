@@ -23,4 +23,11 @@ class HomePageController extends Controller
             'brocker'=>$brocker
         ]);
     }
+
+    public function profile(Request $request){
+        $user = $request->user();
+        return response()->json([
+            'user'=>$user
+        ]);
+    }
 }
