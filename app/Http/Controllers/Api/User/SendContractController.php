@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Complaint;
 use App\Models\Contract;
 use App\Models\File;
 use App\Models\TrainingSubscription;
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\Validator;
 class SendContractController extends Controller
 {
 
-
+//contract
     public function getfiles(){
         $files = File::all();
         $data =[
@@ -40,6 +41,7 @@ class SendContractController extends Controller
     }
 
 
+//training
     public function sendTrainingRequest(Request $request){
         $user = $request->user();
         $validation = Validator::make($request->all(), [
@@ -67,5 +69,26 @@ class SendContractController extends Controller
         ]);
 
         return response()->json(['message' => 'Training Request Sent Successfully']);
+    }
+
+    public function sendComplaint(Request $request){
+        $user = $request->user();
+        $validation = Validator::make($request->all(), [
+            'name'=>'required',
+            'phone' => 'required|integer',
+            'message' => 'required|string',
+        ]);
+
+        if ($validation->fails()) {
+            return response()->json(['message' => $validation->errors()], 422);
+        }
+        $new_complaint = Complaint::create([
+            'user_id' => $user->id,
+            'name' => $request->name,
+            'phone' => $request->phone,
+            'message' => $request->message,
+        ]);
+
+        return response()->json(['message' => 'Complaint Sent Successfully']);
     }
 }

@@ -237,4 +237,8 @@ Route::middleware(['auth:sanctum', 'IsUser'])->group(function () {
 
     Route::post('/user/send-training-request',[SendContractController::class, 'sendTrainingRequest']);
 
+///////////////////////////////////////////////// Complaint /////////////////////////////////////////////////////////
+
+    Route::post('/user/send-complaint',[SendContractController::class, 'sendComplaint']);
+
     });
