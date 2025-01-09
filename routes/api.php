@@ -22,7 +22,9 @@ use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\User\DeveloperController as UserDeveloperController;
 use App\Http\Controllers\Api\User\HomePageController as UserHomePageController;
 use App\Http\Controllers\Api\User\PyamentMethodsController;
+use App\Http\Controllers\Api\User\RequestsController as UserRequestsController;
 use App\Http\Controllers\Api\User\SendContractController;
+use App\Http\Controllers\Api\User\TransactionDealController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -235,10 +237,23 @@ Route::middleware(['auth:sanctum', 'IsUser'])->group(function () {
 
 ///////////////////////////////////////////////// Training Request /////////////////////////////////////////////////////////
 
-    Route::post('/user/send-training-request',[SendContractController::class, 'sendTrainingRequest']);
+    Route::post('/user/send-training-request',[UserRequestsController::class, 'sendTrainingRequest']);
 
 ///////////////////////////////////////////////// Complaint /////////////////////////////////////////////////////////
 
-    Route::post('/user/send-complaint',[SendContractController::class, 'sendComplaint']);
+    Route::post('/user/send-complaint',[UserRequestsController::class, 'sendComplaint']);
 
+///////////////////////////////////////////////// Transaction Deals /////////////////////////////////////////////////////////
+
+    Route::post('/user/send-transaction-deal',[TransactionDealController::class, 'sendTransactionDeals']);
+
+    Route::get('/user/getLeadsIds',[TransactionDealController::class, 'leadid']);
+
+    Route::get('/user/getDeveloperIds',[TransactionDealController::class, 'developerid']);
+
+    Route::get('/user/getSalesDeveloperIds/{developer_id}',[TransactionDealController::class, 'salesdeveloperid']);
+
+    Route::get('/user/getCompoundIds/{developer_id}',[TransactionDealController::class, 'compoundid']);
+
+    Route::get('/user/getUptownIds/{compound_id}',[TransactionDealController::class, 'uptownid']);
     });
