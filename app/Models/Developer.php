@@ -21,6 +21,7 @@ class Developer extends Model
         'start_date',
         'end_date',
         'image',
+        'description'
     ];
 
     public function place(){

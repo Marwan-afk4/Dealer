@@ -28,4 +28,7 @@ class SendContractController extends Controller
 
         return response()->json(['message' => 'Contract Sent Successfully']);
     }
+
+
+    public function sendTrainingRequest(Request $request){}
 }
