@@ -229,6 +229,12 @@ Route::middleware(['auth:sanctum', 'IsUser'])->group(function () {
 
 ///////////////////////////////////////////////// Contracts /////////////////////////////////////////////////////////
 
+    Route::get('/user/files',[SendContractController::class, 'getfiles']);
+
     Route::post('/user/send-contract',[SendContractController::class, 'sendContract']);
+
+///////////////////////////////////////////////// Training Request /////////////////////////////////////////////////////////
+
+    Route::post('/user/send-training-request',[SendContractController::class, 'sendTrainingRequest']);
 
     });
