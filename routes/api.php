@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\Admin\UnitController;
 use App\Http\Controllers\Api\Admin\UserController;
 use App\Http\Controllers\Api\Admin\UsesVedioController;
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\User\CommissionController;
 use App\Http\Controllers\Api\User\DeveloperController as UserDeveloperController;
 use App\Http\Controllers\Api\User\HomePageController as UserHomePageController;
 use App\Http\Controllers\Api\User\PyamentMethodsController;
@@ -256,4 +257,8 @@ Route::middleware(['auth:sanctum', 'IsUser'])->group(function () {
     Route::get('/user/getCompoundIds/{developer_id}',[TransactionDealController::class, 'compoundid']);
 
     Route::get('/user/getUptownIds/{compound_id}',[TransactionDealController::class, 'uptownid']);
+
+////////////////////////////////////////////////// Compounds Commission /////////////////////////////////////////////////////
+
+    Route::get('/user/GetCompounds-Commission',[CommissionController::class, 'getAllCommission']);
     });
