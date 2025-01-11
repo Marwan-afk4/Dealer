@@ -17,6 +17,7 @@ class CommissionController extends Controller
                 'id' => $compound->id,
                 'compound_name' => $compound->compound_name,
                 'commission' => $compound->commission_percentage,
+                'developer_id' => $compound->developer_id
             ];
         });
         return response()->json(['compounds_commission'=>$data]);
