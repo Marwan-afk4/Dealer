@@ -37,6 +37,12 @@ class BrokerController extends Controller
             'brocker_end_date' => $leadData['brocker_end_date'],
             'status' => 'pending',
         ]);
+        $broker_lead = BrokerLead::create([
+            'brocker_id' => $broker->id,
+            'brocker_end_date' => $leadData['brocker_end_date'],
+            'lead_id' => $leadData['lead_id'],
+            'status' => 'in_progress',
+        ]);
     }
 
     // Update the broker's number of deals

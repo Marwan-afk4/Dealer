@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\Admin\UnitController;
 use App\Http\Controllers\Api\Admin\UserController;
 use App\Http\Controllers\Api\Admin\UsesVedioController;
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\User\AddLeadController;
 use App\Http\Controllers\Api\User\CommissionController;
 use App\Http\Controllers\Api\User\DeveloperController as UserDeveloperController;
 use App\Http\Controllers\Api\User\HomePageController as UserHomePageController;
@@ -261,4 +262,8 @@ Route::middleware(['auth:sanctum', 'IsUser'])->group(function () {
 ////////////////////////////////////////////////// Compounds Commission /////////////////////////////////////////////////////
 
     Route::get('/user/GetCompounds-Commission',[CommissionController::class, 'getAllCommission']);
+
+    ///////////////////////////////////////////// AddLead //////////////////////////////////////////////////////////////
+
+    Route::post('/user/add-lead',[AddLeadController::class, 'addLead']);
     });
