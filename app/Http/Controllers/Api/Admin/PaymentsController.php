@@ -37,8 +37,9 @@ class PaymentsController extends Controller
         $payment = Payment::findOrFail($payment_id);
         $payment->update(['status'=>'approved']);
 
-        $user = User::findOrFail($payment->user_id);
-        $user->update(['role'=>'brocker']);
+        $user = User::find($payment->user_id);
+        $user->plan_id = $payment->plan_id;
+        $user->save();
 
         Brocker::create([
             'user_id'=>$payment->user_id,

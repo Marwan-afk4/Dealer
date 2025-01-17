@@ -30,9 +30,6 @@ class PaymentController extends Controller
             'receipt' => $request->receipt,
             'status' => 'pending',
         ]);
-        $setplanuser = User::find($user->id);
-        $setplanuser->plan_id = $request->plan_id;
-        $setplanuser->save();
         return response()->json(['message' => 'Payment made successfully , wait for the admin to approve']);
     }
 

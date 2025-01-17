@@ -98,7 +98,6 @@ class HomepageController extends Controller
                 'semidone' => $semidoneDeals,
                 'pending' => $pendingDeals,
             ],
-            'users' => $totalUsers,
             'user_roles' => [
                 'user' => $users,
                 'brocker' => $brockers,
