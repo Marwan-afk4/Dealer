@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\User;
 use App\Http\Controllers\Controller;
 use App\Models\Payment;
 use App\Models\Plan;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -29,9 +30,12 @@ class PaymentController extends Controller
             'receipt' => $request->receipt,
             'status' => 'pending',
         ]);
+        $setplanuser = User::find($user->id);
+        $setplanuser->plan_id = $request->plan_id;
+        $setplanuser->save();
         return response()->json(['message' => 'Payment made successfully , wait for the admin to approve']);
     }
 
-    
+
 
 }
