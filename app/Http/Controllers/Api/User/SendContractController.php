@@ -25,9 +25,9 @@ class SendContractController extends Controller
     }
     public function sendContract(Request $request){
         $user = $request->user();
-        $paymentpending = Payment::where('user_id', $user->id)->where('status', 'pending')->exists();
-        if (!$user || $paymentpending) {
-            return response()->json(['message' => 'User is not allowed to create a contract due to pending payment or invalid user.'], 403);
+        $seePayment=Payment::where('user_id',$user->id)->where('status','pending')->first();
+        if(!$seePayment){
+            return response()->json(['message' => 'You have to make payment first']);
         }
         $validation = Validator::make($request->all(), [
             'whatsapp_number' => 'required|integer'
