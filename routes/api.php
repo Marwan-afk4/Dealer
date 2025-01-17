@@ -40,6 +40,8 @@ Route::middleware(['auth:sanctum', 'IsSuperAdmin',])->group(function () {
 
     Route::get('/admin/homepage',[HomepageController::class, 'homepage']);
 
+    Route::get('/admin/most-plan',[HomepageController::class, 'getMostPlan']);
+
     Route::post('/admin/logout',[AuthController::class, 'logout']);
 
     /////////////////////////////////// ADS ////////////////////////////////////////////////////
@@ -271,4 +273,5 @@ Route::middleware(['auth:sanctum', 'IsUser'])->group(function () {
 /////////////////////////////////////////////// USER MAKE PAYMENT /////////////////////////////////////////////////////
 
     Route::post('/user/make-payment',[PaymentController::class, 'makePayment']);
+
     });

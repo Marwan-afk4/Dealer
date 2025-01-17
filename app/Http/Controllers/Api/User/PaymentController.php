@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Payment;
+use App\Models\Plan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -30,4 +31,7 @@ class PaymentController extends Controller
         ]);
         return response()->json(['message' => 'Payment made successfully , wait for the admin to approve']);
     }
+
+    
+
 }

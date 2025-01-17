@@ -7,6 +7,8 @@ use App\Models\Brocker;
 use App\Models\Complaint;
 use App\Models\Contract;
 use App\Models\Developer;
+use App\Models\Payment;
+use App\Models\Plan;
 use App\Models\Request as ModelsRequest;
 use App\Models\TrainingSubscription;
 use App\Models\TransactionDeal;
@@ -104,5 +106,25 @@ class HomepageController extends Controller
             ],
             'total_revenue' => $totalRevenue
         ]);
+    }
+
+    public function getMostPlan()
+    {
+        $payments = Payment::where('status', 'approved')->get();
+        $countPlanId = $payments->countBy('plan_id');
+
+        $data = [];
+        foreach ($countPlanId as $planId => $count) {
+            $plan = Plan::find($planId);
+            if ($plan) {
+                $data[] = [
+                    'plan_name' => $plan->name,
+                    'plan_price' => $plan->price_after_discount,
+                    'total_amount' => $count * $plan->price_after_discount
+                ];
+            }
+        }
+
+        return response()->json(['most_plans' => $data]);
     }
 }
