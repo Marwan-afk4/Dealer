@@ -41,11 +41,7 @@ class PaymentsController extends Controller
         $user->plan_id = $payment->plan_id;
         $user->save();
 
-        Brocker::create([
-            'user_id'=>$payment->user_id,
-            'plan_id'=>$payment->plan_id,
-            'profit'=>0,
-        ]);
+        
         return response()->json(['message'=>'Subscription payment approved']);
     }
 
