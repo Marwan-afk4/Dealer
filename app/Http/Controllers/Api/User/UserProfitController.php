@@ -15,6 +15,6 @@ class UserProfitController extends Controller
         $brocker = Brocker::where('user_id', $user->id)->first();
         $leads = Lead::where('brocker_id', $brocker->id)->get();
 
-        return response()->json(['message' => 'Success', 'data' => $leads], 200);
+        return response()->json(['leads' => $leads], 200);
     }
 }
