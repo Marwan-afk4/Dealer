@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api\User;
 use App\Http\Controllers\Controller;
 use App\Models\PaymentMethod;
 use App\Models\Plan;
-use Illuminate\Http\Request;
 
 class PyamentMethodsController extends Controller
 {

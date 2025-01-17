@@ -23,6 +23,7 @@ use App\Http\Controllers\Api\User\AddLeadController;
 use App\Http\Controllers\Api\User\CommissionController;
 use App\Http\Controllers\Api\User\DeveloperController as UserDeveloperController;
 use App\Http\Controllers\Api\User\HomePageController as UserHomePageController;
+use App\Http\Controllers\Api\User\PaymentController;
 use App\Http\Controllers\Api\User\PyamentMethodsController;
 use App\Http\Controllers\Api\User\RequestsController as UserRequestsController;
 use App\Http\Controllers\Api\User\SendContractController;
@@ -266,4 +267,8 @@ Route::middleware(['auth:sanctum', 'IsUser'])->group(function () {
     ///////////////////////////////////////////// AddLead //////////////////////////////////////////////////////////////
 
     Route::post('/user/add-lead',[AddLeadController::class, 'addLead']);
+
+/////////////////////////////////////////////// USER MAKE PAYMENT /////////////////////////////////////////////////////
+
+    Route::post('/user/make-payment',[PaymentController::class, 'makePayment']);
     });

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Complaint;
 use App\Models\Contract;
 use App\Models\File;
+use App\Models\Payment;
 use App\Models\TrainingSubscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -24,6 +25,10 @@ class SendContractController extends Controller
     }
     public function sendContract(Request $request){
         $user = $request->user();
+        $paymentpending = Payment::where('user_id', $user->id)->where('status', 'pending')->first();
+        if ($paymentpending) {
+            return response()->json(['message' => 'Payment pending , wait for admin to approve']);
+        }else{
         $validation = Validator::make($request->all(), [
             'whatsapp_number' => 'required|integer'
         ]);
@@ -39,4 +44,5 @@ class SendContractController extends Controller
 
         return response()->json(['message' => 'Contract Sent Successfully']);
     }
+}
 }
