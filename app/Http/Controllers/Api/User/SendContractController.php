@@ -27,7 +27,7 @@ class SendContractController extends Controller
         $user = $request->user();
         $seePayment=Payment::where('user_id',$user->id)->where('status','pending')->first();
         if(!$seePayment){
-            return response()->json(['message' => 'You have to make payment first']);
+            return response()->json(['message' => 'You have to make payment first'], 422);
         }
         $validation = Validator::make($request->all(), [
             'whatsapp_number' => 'required|integer'
