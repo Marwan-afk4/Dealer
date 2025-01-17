@@ -25,7 +25,7 @@ class SendContractController extends Controller
     }
     public function sendContract(Request $request){
         $user = $request->user();
-        $seePayment=Payment::where('user_id',$user->id)->where('status','pending')->first();
+        $seePayment=Payment::where('user_id',$user->id)->where('status','approved')->first();
         if(!$seePayment){
             return response()->json(['message' => 'You have to make payment first'], 422);
         }

@@ -28,6 +28,7 @@ use App\Http\Controllers\Api\User\PyamentMethodsController;
 use App\Http\Controllers\Api\User\RequestsController as UserRequestsController;
 use App\Http\Controllers\Api\User\SendContractController;
 use App\Http\Controllers\Api\User\TransactionDealController;
+use App\Http\Controllers\Api\User\UserProfitController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -44,7 +45,7 @@ Route::middleware(['auth:sanctum', 'IsSuperAdmin',])->group(function () {
 
     Route::post('/admin/logout',[AuthController::class, 'logout']);
 
-    /////////////////////////////////// ADS ////////////////////////////////////////////////////
+/////////////////////////////////////////////// ADS ////////////////////////////////////////////////////
 
     Route::get('/admin/ads',[AdsController::class, 'getAds']);
 
@@ -273,5 +274,9 @@ Route::middleware(['auth:sanctum', 'IsUser'])->group(function () {
 /////////////////////////////////////////////// USER MAKE PAYMENT /////////////////////////////////////////////////////
 
     Route::post('/user/make-payment',[PaymentController::class, 'makePayment']);
+
+///////////////////////////////////////////////////  User Profit ////////////////////////////////////////////////////////////////
+
+    Route::get('/user/brocker-leads',[UserProfitController::class, 'ProfitwithLeads']);
 
     });
