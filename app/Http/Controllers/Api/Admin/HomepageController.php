@@ -38,7 +38,7 @@ class HomepageController extends Controller
         $developerprofit = $deal->uptown->strat_price - $unitCommissionPrice; //start price =100  =90
         $brockerprofit = ($deal->uptown->strat_price - $developerprofit)*$deal->brocker->comission_percentage/100;//9
         $delerprofit =$unitCommissionPrice - $brockerprofit;
-        return $developerprofit;
+        return $delerprofit;
         });
 
 
