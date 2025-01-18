@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\User;
 use App\Http\Controllers\Controller;
 use App\Models\Brocker;
 use App\Models\Lead;
+use App\Models\TransactionDeal;
 use Illuminate\Http\Request;
 
 class UserProfitController extends Controller
@@ -16,5 +17,31 @@ class UserProfitController extends Controller
         $leads = Lead::where('brocker_id', $brocker->id)->get();
 
         return response()->json(['leads' => $leads], 200);
+    }
+
+    public function dealsDone(Request $request){
+        $user = $request->user();
+        $brocker = Brocker::where('user_id', $user->id)->first();
+        if (!$brocker) {
+            return response()->json(['message' => 'Brocker not found'], 404);
+        }
+        $dealsDone = TransactionDeal::with(['lead'])
+        ->where('brocker_id', $brocker->id)
+        ->where('status', 'approved')
+        ->get();
+
+        $dealwithProfit = $dealsDone->map(function ($deal) use ($brocker) {
+            $unit = $deal->uptown;
+            $profit = $brocker->comission_percentage * $unit->commission_price / 100;
+            return [
+                'id' => $deal->id,
+                'lead' => $deal->lead->lead_name,
+                'unit' => $unit->id,
+                'profit' => $profit
+            ];
+        });
+
+        return response()->json(['dealsDone' => $dealwithProfit], 200);
+
     }
 }

@@ -279,4 +279,6 @@ Route::middleware(['auth:sanctum', 'IsUser'])->group(function () {
 
     Route::get('/user/brocker-leads',[UserProfitController::class, 'ProfitwithLeads']);
 
+    Route::get('/user/deals-done',[UserProfitController::class, 'dealsDone']);
+
     });
