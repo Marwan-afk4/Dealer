@@ -34,9 +34,11 @@ class HomepageController extends Controller
 
         $totalRevenue = TransactionDeal::all()
         ->sum(function ($deal) {
-            $unitCommissionPrice = $deal->uptown->commission_price ?? 0; // Ensure unit exists
-            $brockercommission = $deal->brocker->comission_percentage ?? 0; // Ensure brocker exists
-            return $unitCommissionPrice - $brockercommission;
+        $unitCommissionPrice = $deal->uptown->commission_price ?? 0; // unit com price(10) =start price(100) * com compound(10) /100
+        $developerprofit = $deal->uptown->strat_price - $unitCommissionPrice; //start price =100  =90
+        $brockerprofit = ($deal->uptown->strat_price - $developerprofit)*$deal->brocker->comission_percentage/100;//9
+        $delerprofit =$unitCommissionPrice - $brockerprofit;
+        return $developerprofit;
         });
 
 

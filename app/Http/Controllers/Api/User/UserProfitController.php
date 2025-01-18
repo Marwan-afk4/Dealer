@@ -55,9 +55,11 @@ class UserProfitController extends Controller
 
     $deals = TransactionDeal::where('brocker_id', $brocker->id)->with(['uptown', 'brocker'])->get();
     $totalRevenue = $deals->sum(function ($deal) {
-        $unitCommissionPrice = $deal->uptown->commission_price ?? 0;
-        $brockercommission = $deal->brocker->comission_percentage ?? 0;
-        return $unitCommissionPrice - $brockercommission;
+        $unitCommissionPrice = $deal->uptown->commission_price ?? 0; // unit com price(10) =start price(100) * com compound(10) /100
+        $developerprofit = $deal->uptown->strat_price - $unitCommissionPrice; //start price =100  =90
+        $brockerprofit = ($deal->uptown->strat_price - $developerprofit)*$deal->brocker->comission_percentage/100;//9
+        $delerprofit =$unitCommissionPrice - $brockerprofit;
+        return $delerprofit;
     });
 
     return response()->json([
