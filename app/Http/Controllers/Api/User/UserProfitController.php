@@ -44,4 +44,27 @@ class UserProfitController extends Controller
         return response()->json(['dealsDone' => $dealwithProfit], 200);
 
     }
+
+    public function Profit_Sales(Request $request){
+    $user = $request->user();
+    $brocker = Brocker::where('user_id', $user->id)->first();
+
+    if (!$brocker) {
+        return response()->json(['message' => 'Broker not found'], 404);
+    }
+
+    $deals = TransactionDeal::where('brocker_id', $brocker->id)->with(['uptown', 'brocker'])->get();
+    $totalRevenue = $deals->sum(function ($deal) {
+        $unitCommissionPrice = $deal->uptown->commission_price ?? 0;
+        $brockercommission = $deal->brocker->comission_percentage ?? 0;
+        return $unitCommissionPrice - $brockercommission;
+    });
+
+    return response()->json([
+        'profit' => $brocker->profit,
+        'dealer_profit' => $totalRevenue
+    ], 200);
+}
+
+
 }

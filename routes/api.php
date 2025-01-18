@@ -281,4 +281,6 @@ Route::middleware(['auth:sanctum', 'IsUser'])->group(function () {
 
     Route::get('/user/deals-done',[UserProfitController::class, 'dealsDone']);
 
+    Route::get('/user/profit-sales',[UserProfitController::class, 'Profit_Sales']);
+
     });

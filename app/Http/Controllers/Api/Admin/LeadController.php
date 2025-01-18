@@ -23,7 +23,7 @@ class LeadController extends Controller
                 'lead_phone' => $lead->lead_phone,
                 'lead_status' => $lead->status,
                 'marketing_agency_id'=> $lead->marketing_agency_id,
-                'marketing_agency_name' => $lead->marketing_agency->name,
+                'marketing_agency_name' => $lead->marketing_agency->name??null,
                 'sales_man_name' => $lead->sales_man_name,
                 'sales_man_phone' => $lead->sales_man_phone
             ];
