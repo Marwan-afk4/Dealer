@@ -23,4 +23,8 @@ class Compound extends Model
     public function transaction_deals(){
         return $this->hasMany(TransactionDeal::class);
     }
+
+    public function favourite(){
+        return $this->hasMany(Favourite::class);
+    }
 }

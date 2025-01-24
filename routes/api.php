@@ -22,6 +22,7 @@ use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\User\AddLeadController;
 use App\Http\Controllers\Api\User\CommissionController;
 use App\Http\Controllers\Api\User\DeveloperController as UserDeveloperController;
+use App\Http\Controllers\Api\User\FavouritesController;
 use App\Http\Controllers\Api\User\HomePageController as UserHomePageController;
 use App\Http\Controllers\Api\User\PaymentController;
 use App\Http\Controllers\Api\User\PyamentMethodsController;
@@ -282,5 +283,13 @@ Route::middleware(['auth:sanctum', 'IsUser'])->group(function () {
     Route::get('/user/deals-done',[UserProfitController::class, 'dealsDone']);
 
     Route::get('/user/profit-sales',[UserProfitController::class, 'Profit_Sales']);
+
+//////////////////////////////////////////////////// Favorite ////////////////////////////////////////////////////////////////
+
+    Route::get('/user/favorite',[FavouritesController::class, 'getFavourites']);
+
+    Route::post('/user/favorite/add',[FavouritesController::class, 'addFavourite']);
+
+    Route::delete('/user/favorite/delete/{id}',[FavouritesController::class, 'deleteFavourite']);
 
     });
