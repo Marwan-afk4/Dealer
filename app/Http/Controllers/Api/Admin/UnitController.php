@@ -7,31 +7,42 @@ use App\Models\Compound;
 use App\Models\Developer;
 use App\Models\UnitsImage;
 use App\Models\Uptown;
+use App\trait\image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class UnitController extends Controller
 {
+    use image;
 
     protected $updateUptown =['name','apparment','space','bathroom','bed','strat_price','delivery_date','sale_type','master_plan_image','floor_plan_image'];
 
-    public function unitDeveloper($compound_id){
-        $compound = Compound::find($compound_id);
-        $compoundUptownCount = Uptown::where('compound_id', $compound_id)->count();
-        $units = Uptown::where('compound_id', $compound_id)
-        ->with('unitImages')
+    public function unitDeveloper($compound_id)
+{
+    $compound = Compound::find($compound_id);
+    $compoundUptownCount = Uptown::where('compound_id', $compound_id)->count();
+    $units = Uptown::where('compound_id', $compound_id)
+        ->with('unitImages') // Load the unitImages relationship
         ->get();
-        $compound->update(['units'=>$compoundUptownCount]);
 
-
-        $data = [
-            'units'=>$compoundUptownCount,
-            'units_data'=>$units
-        ];
-
-        return response()->json($data);
-
+    // Update image paths to full URLs
+    foreach ($units as $unit) {
+        foreach ($unit->unitImages as $image) {
+            $image->image = url('storage/' . $image->image);
+        }
     }
+
+    $compound->update(['units' => $compoundUptownCount]);
+
+    $data = [
+        'units' => $compoundUptownCount,
+        'units_data' => $units,
+    ];
+
+    return response()->json($data);
+}
+
+
 
     public function addUptown(Request $request,$compound_id){
         $validation = Validator::make($request->all(), [
@@ -46,12 +57,13 @@ class UnitController extends Controller
             'master_plan_image' => 'nullable',
             'floor_plan_image' => 'nullable',
             'images' => 'nullable|array',
-            'images.*' => 'nullable',
+            'images.*.image' => 'nullable|string'
         ]);
 
         if ($validation->fails()) {
             return response()->json(['errors' => $validation->errors()], 422);
         }
+
         $compound = Compound::find($compound_id);
         $commission_percentage = $compound->commission_percentage;
         $uptown = Uptown::create([
@@ -70,16 +82,19 @@ class UnitController extends Controller
         ]);
 
         if ($request->has('images')) {
-            foreach ($request->images as $image) {
-                UnitsImage::create([
-                    'uptown_id' => $uptown->id,
-                    'image' => $image['image'],
-                ]);
+            foreach ($request->images as $imageData) {
+                if (isset($imageData['image'])) {
+                    $imagePath = $this->storeBase64Image($imageData['image'], 'admin/unit/images');
+                    UnitsImage::create([
+                        'uptown_id' => $uptown->id,
+                        'image' => $imagePath,
+                    ]);
+                }
             }
         }
         $this->updatecompoundUnit($compound_id);
 
-        return response()->json(['message' => 'Unit added successfully' ]);
+        return response()->json(['message' => 'Unit added successfully', 'uptown_id' => $uptown]);
 
     }
 
@@ -121,9 +136,12 @@ class UnitController extends Controller
 
     public function DeleteUptownImage($id){
         $uptownImage = UnitsImage::find($id);
-        $uptownImage->delete();
-        return response()->json(['message'=>'Unit Image Deleted Successfully']);
+        if ($uptownImage) {
+            $this->deleteImage($uptownImage->image);
+            $uptownImage->delete();
+            return response()->json(['message' => 'Image deleted successfully']);
+        }
+        return response()->json(['message' => 'Image not found'], 404);
     }
 
-    //UPTOWN   , UPDATE
 }
