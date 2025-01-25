@@ -16,7 +16,7 @@ class FavouritesController extends Controller
     public function getFavourites(Request $request){
     $user = $request->user();
 
-    $unitsFavourite = Favourite::with('uptown')
+    $unitsFavourite = Favourite::with('uptown.unitimages')
         ->where('type', 'unit')
         ->where('user_id', $user->id)
         ->get()
@@ -34,6 +34,13 @@ class FavouritesController extends Controller
                 'commission_price' => $favourite->uptown->commission_price,
                 'sale_type' => $favourite->uptown->sale_type,
                 'master_plan_image' => $favourite->uptown->master_plan_image,
+                'images' => $favourite->uptown->unitimages->map(function ($image) {
+                    return [
+                        'id' => $image->id,
+                        'uptown_id' => $image->uptown_id,
+                        'image' => $image->image
+                    ];
+                }),
                 'floor_plan_image' => $favourite->uptown->floor_plan_image,
                 'status' => $favourite->uptown->status,
             ];
