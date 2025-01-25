@@ -80,7 +80,7 @@ Route::middleware(['auth:sanctum', 'IsSuperAdmin',])->group(function () {
 
 //////////////////////////////////////////// Uptowns (units) ////////////////////////////////////////////////
 
-    Route::get('/admin/units/{compound_id}',[UnitController::class, 'unitDeveloper']);
+    Route::get('/admin/units/{compound_id}',[UnitController::class, 'unitDeveloper'])->middleware('cors');
 
     Route::post('/admin/units/add/{compound_id}',[UnitController::class, 'addUptown']);
 

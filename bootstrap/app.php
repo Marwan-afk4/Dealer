@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\CorsMiddleware;
 use App\Http\Middleware\SuperAdminMiddleware;
 use App\Http\Middleware\UserMiddleware;
 use Illuminate\Foundation\Application;
@@ -18,7 +19,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'IsSuperAdmin' => SuperAdminMiddleware::class,
             'IsAdmin'=> AdminMiddleware::class,
-            'IsUser'=> UserMiddleware::class
+            'IsUser'=> UserMiddleware::class,
+            'cors' => CorsMiddleware::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

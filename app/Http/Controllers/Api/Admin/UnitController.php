@@ -81,6 +81,16 @@ class UnitController extends Controller
             'floor_plan_image' => $request->floor_plan_image
         ]);
 
+        if ($request->has('master_plan_image')) {
+            $imagePath = $this->storeBase64Image($request->master_plan_image, 'admin/unit/master_plan');
+            $uptown->update(['master_plan_image' => $imagePath]);
+        }
+
+        if ($request->has('floor_plan_image')) {
+            $imagePath = $this->storeBase64Image($request->floor_plan_image, 'admin/unit/floor_plan');
+            $uptown->update(['floor_plan_image' => $imagePath]);
+        }
+
         if ($request->has('images')) {
             foreach ($request->images as $imageData) {
                 if (isset($imageData['image'])) {
