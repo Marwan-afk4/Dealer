@@ -29,6 +29,7 @@ class Uptown extends Model
         'master_plan_image',
         'commission_price',
         'description',
+        'favourite'
     ];
 
     public function developer(){
@@ -59,7 +60,4 @@ class Uptown extends Model
         return $this->hasMany(TransactionDeal::class);
     }
 
-    public function favourite(){
-        return $this->hasMany(Favourite::class);
-    }
 }

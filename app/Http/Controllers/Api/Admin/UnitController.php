@@ -25,7 +25,20 @@ class UnitController extends Controller
         ->with('unitImages') // Load the unitImages relationship
         ->get();
 
-    // Update image paths to full URLs
+
+        foreach ($units as $unit) {
+            if($unit->master_plan_image){
+                $unit->master_plan_image = url('storage/' . $unit->master_plan_image);
+            }
+        }
+
+        foreach ($units as $unit) {
+            if($unit->floor_plan_image){
+                $unit->floor_plan_image = url('storage/' . $unit->floor_plan_image);
+            }
+        }
+
+
     foreach ($units as $unit) {
         foreach ($unit->unitImages as $image) {
             $image->image = url('storage/' . $image->image);

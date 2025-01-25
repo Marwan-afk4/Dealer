@@ -20,7 +20,6 @@ return Application::configure(basePath: dirname(__DIR__))
             'IsSuperAdmin' => SuperAdminMiddleware::class,
             'IsAdmin'=> AdminMiddleware::class,
             'IsUser'=> UserMiddleware::class,
-            'cors' => CorsMiddleware::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

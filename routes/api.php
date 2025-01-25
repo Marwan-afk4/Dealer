@@ -80,7 +80,7 @@ Route::middleware(['auth:sanctum', 'IsSuperAdmin',])->group(function () {
 
 //////////////////////////////////////////// Uptowns (units) ////////////////////////////////////////////////
 
-    Route::get('/admin/units/{compound_id}',[UnitController::class, 'unitDeveloper'])->middleware('cors');
+    Route::get('/admin/units/{compound_id}',[UnitController::class, 'unitDeveloper']);
 
     Route::post('/admin/units/add/{compound_id}',[UnitController::class, 'addUptown']);
 
@@ -286,10 +286,10 @@ Route::middleware(['auth:sanctum', 'IsUser'])->group(function () {
 
 //////////////////////////////////////////////////// Favorite ////////////////////////////////////////////////////////////////
 
-    Route::get('/user/favorite',[FavouritesController::class, 'getFavourites']);
+    Route::get('/user/favourites',[FavouritesController::class, 'getFavourites']);
 
-    Route::post('/user/favorite/add',[FavouritesController::class, 'addFavourite']);
+    Route::put('/user/Unitfavourite/{id}',[FavouritesController::class, 'unitFavourite']);
 
-    Route::delete('/user/favorite/delete/{id}',[FavouritesController::class, 'deleteFavourite']);
+    Route::put('/user/Compoundfavourite/{id}',[FavouritesController::class, 'compoundFavourite']);
 
     });
