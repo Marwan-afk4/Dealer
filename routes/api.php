@@ -226,6 +226,10 @@ Route::middleware(['auth:sanctum', 'IsUser'])->group(function () {
 
         Route::get('/user/profile',[UserHomePageController::class, 'profile']);
 
+        Route::delete('/user/delete-profile',[UserHomePageController::class, 'deleteProfile']);
+
+        Route::put('/user/update-profile',[UserHomePageController::class, 'UpdateProfile']);
+
 //////////////////////////////////////////////// Developer /////////////////////////////////////////////////////////
 
     Route::get('/user/developers',[UserDeveloperController::class, 'GetDevloper']);
