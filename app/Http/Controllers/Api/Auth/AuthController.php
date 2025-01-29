@@ -79,9 +79,10 @@ class AuthController extends Controller
         }
 
 
-    public function googleLogin(){
-        return Socialite::driver('google')->redirect();
-    }
+        public function googleLogin() {
+            return Socialite::driver('google')
+                ->redirect();
+        }
 
     public function googleAuthenticationCallback(){
         $user = Socialite::driver('google')->user();
