@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
@@ -76,5 +77,15 @@ class AuthController extends Controller
             $user->currentAccessToken()->delete();
             return response()->json(['message'=>'logged out successfully']);
         }
+
+
+    public function googleLogin(){
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function googleAuthenticationCallback(){
+        $user = Socialite::driver('google')->user();
+        dd($user);
+    }
 
 }
