@@ -39,10 +39,7 @@ Route::middleware(['web'])->group(function () {
     Route::get('/login/google', [AuthController::class, 'googleLogin']);
     Route::get('/login/google-callback', [AuthController::class, 'googleAuthenticationCallback']);
 });
-Route::middleware(['start-session'])->group(function () {
-    Route::get('/login/google', [AuthController::class, 'googleLogin']);
-    Route::get('/login/google-callback', [AuthController::class, 'googleAuthenticationCallback']);
-});
+
 
 
 
