@@ -35,7 +35,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/register',[AuthController::class, 'register']);
 Route::post('/login',[AuthController::class, 'login']);
-
+Route::middleware(['web'])->group(function () {
+    Route::get('/login/google', [AuthController::class, 'googleLogin']);
+    Route::get('/login/google-callback', [AuthController::class, 'googleAuthenticationCallback']);
+});
 Route::middleware(['start-session'])->group(function () {
     Route::get('/login/google', [AuthController::class, 'googleLogin']);
     Route::get('/login/google-callback', [AuthController::class, 'googleAuthenticationCallback']);
