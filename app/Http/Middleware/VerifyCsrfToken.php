@@ -12,6 +12,6 @@ class VerifyCsrfToken extends Middleware
      * @var array<int, string>
      */
     protected $except = [
-        'api/login/google-callback', // Exclude Google OAuth callback
+        'api/*', // Disable CSRF for all API routes temporarily
     ];
 }
