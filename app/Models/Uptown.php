@@ -29,7 +29,10 @@ class Uptown extends Model
         'master_plan_image',
         'commission_price',
         'description',
-        'favourite'
+        'favourite',
+        'cash',
+        'installment',
+        'installment_years'
     ];
 
     public function developer(){

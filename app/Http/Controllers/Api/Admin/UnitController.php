@@ -69,6 +69,9 @@ class UnitController extends Controller
             'sale_type' => 'required',
             'master_plan_image' => 'nullable',
             'floor_plan_image' => 'nullable',
+            'cash'=> 'nullable|between:0,1',
+            'installment' => 'nullable|between:0,1',
+            'installment_years'=>'nullable|integer',
             'images' => 'nullable|array',
             'images.*.image' => 'nullable|string'
         ]);
@@ -90,6 +93,9 @@ class UnitController extends Controller
             'commission_price'=>$request->strat_price*($commission_percentage/100),
             'delivery_date' => $request->delivery_date,
             'sale_type' => $request->sale_type,
+            'cash' => $request->cash ?? 0,
+            'installment' => $request->installment ?? 0,
+            'installment_years'=>$request->installment_years ?? 0,
             'master_plan_image' => $request->master_plan_image,
             'floor_plan_image' => $request->floor_plan_image
         ]);
