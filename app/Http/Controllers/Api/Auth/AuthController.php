@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Socialite\Facades\Socialite;
@@ -85,8 +87,45 @@ class AuthController extends Controller
         }
 
     public function googleAuthenticationCallback(){
-        $user = Socialite::driver('google')->user();
-        dd($user);
-    }
+
+        try{
+
+            $user = Socialite::driver('google')->user();
+
+            $AuthUser = User::where('google_id',$user->id)->firstOrFail();
+            if($AuthUser){
+                $token = $AuthUser->createToken('auth_token')->plainTextToken;
+                return response()->json([
+                    'message' => 'User successfully logged in',
+                    'user' => $AuthUser,
+                    'token' => $token,
+                ]);
+            }
+            else{
+                $user = User::create([
+                    'first_name' => $user->name,
+                    'last_name' => null,
+                    'email' => $user->email,
+                    'phone' => null,
+                    'password' => null,
+                    'qualification' => null,
+                    'experience_year' => null,
+                    'governce' => null,
+                    'role' => 'user',
+                    'age' => null,
+                    'google_id' => $user->id,
+                ]);
+                $token = $user->createToken('auth_token')->plainTextToken;
+                return response()->json([
+                    'message' => 'User successfully logged in',
+                    'user' => $user,
+                    'token' => $token,
+                ]);
+            }
+        } catch(Exception $e){
+            dd($e);
+        }
+
+}
 
 }

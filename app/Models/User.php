@@ -25,7 +25,8 @@ class User extends Model
         'experience_year',
         'governce',
         'age',
-        'plan_id'
+        'plan_id',
+        'google_id'
     ];
 
     protected $hidden = [
@@ -57,7 +58,5 @@ class User extends Model
         return $this->belongsTo(Plan::class);
     }
 
-    public function favourite(){
-        return $this->hasMany(Favourite::class);
-    }
+
 }
