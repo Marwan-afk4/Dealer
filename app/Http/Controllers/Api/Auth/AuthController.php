@@ -92,7 +92,7 @@ class AuthController extends Controller
 
             $user = Socialite::driver('google')->user();
 
-            $AuthUser = User::where('google_id',$user->id)->firstOrFail();
+            $AuthUser = User::where('google_id',$user->id)->first();
             if($AuthUser){
                 $token = $AuthUser->createToken('auth_token')->plainTextToken;
                 return response()->json([
