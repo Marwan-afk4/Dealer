@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Exception;
+use Google_Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -81,50 +82,96 @@ class AuthController extends Controller
         }
 
 
-        public function googleLogin() {
-            return Socialite::driver('google')
-                ->redirect();
-        }
 
-    public function googleAuthenticationCallback(){
 
-        try{
+    public function googleAuthenticationCallback(Request $request) {
+        $request->validate([
+            'id_token' => 'required|string',
+        ]);
 
-            $user = Socialite::driver('google')->user();
+        $idToken = $request->input('id_token');
 
-            $AuthUser = User::where('google_id',$user->id)->first();
-            if($AuthUser){
-                $token = $AuthUser->createToken('auth_token')->plainTextToken;
-                return response()->json([
-                    'message' => 'User successfully logged in',
-                    'user' => $AuthUser,
-                    'token' => $token,
-                ]);
+        // Initialize Google Client
+        $client = new Google_Client(['client_id' => config('services.google.client_id')]);
+
+
+        try {
+
+            $payload = $client->verifyIdToken($idToken);
+
+            if (!$payload) {
+                return response()->json(['error' => 'Invalid Google token'], 401);
             }
-            else{
+
+            // Extract user info from payload
+            $googleId = $payload['sub'];
+            $email = $payload['email'];
+            $name = $payload['name'];
+
+
+            $user = User::where('google_id', $googleId)->orWhere('email', $email)->first();
+
+            if (!$user) {
+
                 $user = User::create([
-                    'first_name' => $user->name,
+                    'first_name' => $name,
                     'last_name' => null,
-                    'email' => $user->email,
-                    'phone' => null,
+                    'email' => $email,
+                    'google_id' => $googleId,
                     'password' => null,
-                    'qualification' => null,
-                    'experience_year' => null,
-                    'governce' => null,
                     'role' => 'user',
-                    'age' => null,
-                    'google_id' => $user->id,
-                ]);
-                $token = $user->createToken('auth_token')->plainTextToken;
-                return response()->json([
-                    'message' => 'User successfully logged in',
-                    'user' => $user,
-                    'token' => $token,
                 ]);
             }
-        } catch(Exception $e){
-            dd($e);
+
+            // Generate authentication token
+            $token = $user->createToken('auth_token')->plainTextToken;
+
+            return response()->json([
+                'message' => 'User successfully authenticated',
+                'user' => $user,
+                'token' => $token,
+            ]);
+
+        } catch (Exception $e) {
+            return response()->json(['error' => 'Google authentication failed', 'details' => $e->getMessage()], 500);
         }
+        // try{
+
+        //     $user = Socialite::driver('google')->user();
+
+        //     $AuthUser = User::where('google_id',$user->id)->first();
+        //     if($AuthUser){
+        //         $token = $AuthUser->createToken('auth_token')->plainTextToken;
+        //         return response()->json([
+        //             'message' => 'User successfully logged in',
+        //             'user' => $AuthUser,
+        //             'token' => $token,
+        //         ]);
+        //     }
+        //     else{
+        //         $user = User::create([
+        //             'first_name' => $user->name,
+        //             'last_name' => null,
+        //             'email' => $user->email,
+        //             'phone' => null,
+        //             'password' => null,
+        //             'qualification' => null,
+        //             'experience_year' => null,
+        //             'governce' => null,
+        //             'role' => 'user',
+        //             'age' => null,
+        //             'google_id' => $user->id,
+        //         ]);
+        //         $token = $user->createToken('auth_token')->plainTextToken;
+        //         return response()->json([
+        //             'message' => 'User successfully logged in',
+        //             'user' => $user,
+        //             'token' => $token,
+        //         ]);
+        //     }
+        // } catch(Exception $e){
+        //     dd($e);
+        // }
 
 }
 
