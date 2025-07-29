@@ -45,7 +45,7 @@ Route::post('/login/google', [AuthController::class, 'googleAuthenticationCallba
 
 
 
-Route::middleware(['auth:sanctum', 'IsSuperAdmin',])->group(function () {
+Route::middleware(['auth:sanctum', 'role:SuperAdmin',])->group(function () {
 
     Route::get('/admin/homepage',[HomepageController::class, 'homepage']);
 
@@ -225,7 +225,7 @@ Route::middleware(['auth:sanctum', 'IsSuperAdmin',])->group(function () {
 
 
 
-Route::middleware(['auth:sanctum', 'IsUser'])->group(function () {
+Route::middleware(['auth:sanctum', 'role:user'])->group(function () {
 
         Route::get('/user/homepage',[UserHomePageController::class, 'homepage']);
 

@@ -17,14 +17,37 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        $middleware->web([
+            //sanctum middleware enures authenticated first
+            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+            \Illuminate\Cookie\Middleware\EncryptCookies::class,
+            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            \Illuminate\Session\Middleware\StartSession::class,
+            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class,
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+
+            // Custom middleware should come after authentication
+            //\App\Http\Middleware\RoleMiddleware::class,
+            \App\Http\Middleware\UpdateLastVisit::class,
+        ]);
+
         $middleware->alias([
-            'IsSuperAdmin' => SuperAdminMiddleware::class,
-            'IsAdmin'=> AdminMiddleware::class,
-            'IsUser'=> UserMiddleware::class,
-            'web' => EncryptCookies::class,
-            'start-session' => \Illuminate\Session\Middleware\StartSession::class,
+            'role' => \App\Http\Middleware\RoleMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();
+    // ->withMiddleware(function (Middleware $middleware) {
+    //     $middleware->alias([
+    //         'IsSuperAdmin' => SuperAdminMiddleware::class,
+    //         'IsAdmin'=> AdminMiddleware::class,
+    //         'IsUser'=> UserMiddleware::class,
+    //         'web' => EncryptCookies::class,
+    //         'start-session' => \Illuminate\Session\Middleware\StartSession::class,
+    //     ]);
+    // })
+    // ->withExceptions(function (Exceptions $exceptions) {
+    //     //
+    // })->create();

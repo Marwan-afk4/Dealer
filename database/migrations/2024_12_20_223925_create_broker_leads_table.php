@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('broker_leads', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('brocker_id')->constrained()->onDelete('cascade');
             $table->foreignId('lead_id')->constrained()->onDelete('cascade');
             $table->date('brocker_end_date')->nullable();
             $table->enum('status',['done','in_progress','lost'])->default('in_progress');

@@ -15,11 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('marketing_agency_id')->constrained('marketing_agencies')->onDelete('cascade');
             $table->foreignId('uptown_id')->constrained()->onDelete('cascade');
-            $table->foreignId('brocker_id')->constrained()->onDelete('cascade');
             $table->string('lead_name')->Notnulable();
             $table->string('lead_phone')->Notnulable();
             $table->date('brocker_start_date')->nullable();
-            $table->date('brocker_end_date')->nullable();
             $table->string('sales_man_name')->nullable();
             $table->string('sales_man_phone')->nullable();
             $table->enum('status',['lost','done','pending','empty'])->default('empty');

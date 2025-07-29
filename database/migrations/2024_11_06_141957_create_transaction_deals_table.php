@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('phone')->Notnulable();
             $table->float('deal_value')->Notnulable();
             $table->longText('image')->nullable();
-            $table->string('status')->Notnulable();
             $table->string('profit')->nullable();
             $table->timestamps();
         });
